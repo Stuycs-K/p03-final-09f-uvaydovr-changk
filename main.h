@@ -8,3 +8,6 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
+
+void player1Logic();
+void player2Logic();
