@@ -6,5 +6,7 @@ int main(){
 }
 
 void player2Logic(){
+  printf("Connecting to Player 1\n");
+  //TCP Handshake
   return;
 }
