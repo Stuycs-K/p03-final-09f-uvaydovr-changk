@@ -1,3 +1,15 @@
+#include "main.h"
+
+#define SEM_KEY 24601
+#define SHM_KEY 24602
+
+union semun {
+  int val;
+  struct semid_ds *buf;
+  unsigned short *array;
+  struct seminfo *__buf;
+};
+
 
 static void create() {
   int semd = semget(SEM_KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
@@ -33,6 +45,13 @@ static void create() {
     exit(1);
   }
 
+  FILE *f = fopen("board.txt", "w");
+  if (!f) {
+    perror("fopen board.txt");
+    exit(1);
+  }
+  fclose(f);
+
 
   //add initial state stuff later with loop
 
@@ -40,9 +59,9 @@ static void create() {
 }
 
 static void view() {
-  FILE *f = fopen("story.txt", "r");
+  FILE *f = fopen("board.txt", "r");
   if (!f) {
-    perror("fopen story.txt");
+    perror("fopen board.txt");
     return;
   }
   char buf[1024];
@@ -89,9 +108,15 @@ int main(int argc, char *argv[]) {
     printf("usage: %s [create|view|remove]\n", argv[0]);
     return 1;
   }
-  if (!strcmp(argv[1], "create")) create_all();
-  else if (!strcmp(argv[1], "view")) view_all();
-  else if (!strcmp(argv[1], "remove")) remove_all();
-  else printf("unknown cmd\n");
+  if (strcmp(argv[1], "create") == 0) {
+    create();
+  }
+  if (strcmp(argv[1], "remove") == 0) {
+    remove_all();
+  }
+  if (strcmp(argv[1], "view") == 0) {
+    view();
+  }
+
   return 0;
 }

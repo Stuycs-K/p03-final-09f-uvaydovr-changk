@@ -25,3 +25,10 @@ int main(){
 // assign player 1 and 2 by PID?
 // main function that forks into two different things
 // semaphoresssss
+
+
+// user input >> 2
+// take the number, looks at the array for that column
+// starts from bottom row and strcmp to see if it's "_" >> then changes value to X/O
+// if it's not, then it goes up the rows
+// then semaphore goes up
