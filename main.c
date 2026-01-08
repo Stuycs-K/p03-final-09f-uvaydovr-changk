@@ -67,3 +67,29 @@ int updateBoard(char * board,int col){
 // starts from bottom row and strcmp to see if it's "_" >> then changes value to X/O
 // if it's not, then it goes up the rows
 // then semaphore goes up
+
+
+//semaphores (still think we can use this)
+
+/*
+1. control create (semget and semctl)
+2. write board.txt
+3. player starts and gets semd = semget
+4. sem_down(semd) to lock it
+5. reads board.txt and parses
+6. if not  next then release sem_up(semd) and sleep?
+7. if turn, print board 
+
+
+
+*/
+
+
+int sem_down(int semd){
+     struct sembuf sb = {0, -1, SEM_UNDO};
+     return semop(semd, &sb, 1);
+}
+int sem_up(int semd){
+    struct sembuf sb = {0, 1, SEM_UNDO};
+    return semop(semd, &sb, 1);
+}

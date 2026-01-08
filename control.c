@@ -31,7 +31,7 @@ static void create_all() {
   }
 
   
-  printf("Created semaphore + shared memory. Board reset.\n");
+  printf("Created semaphore + shared memory. Player 1 starts.\n");
 }
 
 static void view() {
