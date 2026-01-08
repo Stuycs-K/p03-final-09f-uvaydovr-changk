@@ -15,7 +15,19 @@ void printBoard(char * board){
   //  _3_|_6_|_9_
   // *Actual board has more rows and columns
   // *numbering may change
-  return;
+  
+  printf("\n 0 1 2 3 4 5 6\n");
+  for(int r = 0; r < ROWS; r++) {
+      printf("%d", r);
+      for (int c = 0; c < COLS; c++) {
+          int i = r * COLS + c;
+          char ch = board[i];
+          if(ch ==0) ch = '_';
+          printf("%c ", ch);
+      }
+      printf("\n");
+      }
+   printf("\n");
 }
 
 int updateBoard(char * board,int col){

@@ -1,8 +1,5 @@
 #include "main.h"
 
-#define SEM_KEY 24601
-#define SHM_KEY 24602
-
 union semun {
   int val;
   struct semid_ds *buf;
@@ -11,7 +8,7 @@ union semun {
 };
 
 
-static void create() {
+static void create_all() {
   int semd = semget(SEM_KEY, 1, IPC_CREAT | IPC_EXCL | 0644);
   if (semd == -1) {
     perror("semget");
@@ -33,28 +30,7 @@ static void create() {
     exit(1);
   }
 
-  int *last_line = shmat(shmid, 0, 0);
-  if (last_line == (void *) -1) {
-    perror("shmat");
-    exit(1);
-  }
-
-  *last_line = 0;
-  if (shmdt(last_line) == -1) {
-    perror("shmdt");
-    exit(1);
-  }
-
-  FILE *f = fopen("board.txt", "w");
-  if (!f) {
-    perror("fopen board.txt");
-    exit(1);
-  }
-  fclose(f);
-
-
-  //add initial state stuff later with loop
-
+  
   printf("Created semaphore + shared memory. Board reset.\n");
 }
 
