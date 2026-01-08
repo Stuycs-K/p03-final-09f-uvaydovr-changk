@@ -1,7 +1,30 @@
 #include "main.h"
-int main(){
+
+int checkBoard(char * board){
+  //checks board to see if game is over
+  //returns -1 if board full with no winner
+  //returns 0 if game is not over
+  //returns 1 if p1 wins and 2 if p2 wins
   return 0;
 }
+
+void printBoard(char * board){
+  //prints board in specific format like this:
+  //  _1_|_4_|_7_
+  //  _2_|_5_|_8_
+  //  _3_|_6_|_9_
+  // *Actual board has more rows and columns
+  // *numbering may change
+  return;
+}
+
+int updateBoard(char * board,int col){
+  //updates board array
+  //returns 0 if board updated
+  //returns -1 if col was already filled
+  return 0;
+}
+
 
 // P1 and P2 are both run targets
 // Player 1 calls 'make P1' which uses player1Logic()

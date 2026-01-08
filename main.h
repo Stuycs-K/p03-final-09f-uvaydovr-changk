@@ -11,3 +11,6 @@
 
 void player1Logic();
 void player2Logic();
+int checkBoard(char * board);
+void printBoard(char * board);
+int updateBoard(char * board,int col);
