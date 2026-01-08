@@ -15,26 +15,46 @@ void printBoard(char * board){
   //  _3_|_6_|_9_
   // *Actual board has more rows and columns
   // *numbering may change
-  
+
   printf("\n 0 1 2 3 4 5 6\n");
   for(int r = 0; r < ROWS; r++) {
-      printf("%d", r);
-      for (int c = 0; c < COLS; c++) {
-          int i = r * COLS + c;
-          char ch = board[i];
-          if(ch ==0) ch = '_';
-          printf("%c ", ch);
-      }
-      printf("\n");
-      }
-   printf("\n");
+    printf("%d", r);
+    for (int c = 0; c < COLS; c++) {
+      int i = r * COLS + c;
+      char ch = board[i];
+      if(ch ==0) ch = '_';
+      printf("%c ", ch);
+    }
+    printf("\n");
+  }
+  printf("\n");
 }
+
+/*
+
+_1_|_2_|_3_|_4_|_5_|
+___|___|___|___|___|
+___|___|___|___|___|
+___|___|___|___|___|
+
+*/
 
 int updateBoard(char * board,int col){
   //updates board array
   //returns 0 if board updated
   //returns -1 if col was already filled
-  return 0;
+
+  if (col < 0 || col > COLS) {
+    return -1;
+  }
+  for (int r = ROWS - 1; r >= 0; r++) {
+    int i =
+    if (board[i] == '_' || board[i] == 0) {
+      board[i] = 'X';
+      return 0;
+    }
+  }
+  return -1;
 }
 
 
@@ -53,43 +73,18 @@ int updateBoard(char * board,int col){
 // prints out grid _file[0]_| repeatedly
 // file probably created in main and filled with _
 
-// Debugging:
-// create a view function that prints boards
-
-// Original Ideas:
-// assign player 1 and 2 by PID?
-// main function that forks into two different things
-// semaphoresssss
-
-
 // user input >> 2
 // take the number, looks at the array for that column
 // starts from bottom row and strcmp to see if it's "_" >> then changes value to X/O
 // if it's not, then it goes up the rows
-// then semaphore goes up
 
-
-//semaphores (still think we can use this)
 
 /*
-1. control create (semget and semctl)
-2. write board.txt
-3. player starts and gets semd = semget
-4. sem_down(semd) to lock it
-5. reads board.txt and parses
-6. if not  next then release sem_up(semd) and sleep?
-7. if turn, print board 
-
-
+1. we need a server!
+2. forks off a subserver and runs the game logic there
+3. server knows who wins and loses (maybe enter player names at the start?)
+4. two clients (can add more clients later) that are the players
+5. sockets :(
+6. networking lab
 
 */
-
-
-int sem_down(int semd){
-     struct sembuf sb = {0, -1, SEM_UNDO};
-     return semop(semd, &sb, 1);
-}
-int sem_up(int semd){
-    struct sembuf sb = {0, 1, SEM_UNDO};
-    return semop(semd, &sb, 1);
-}
