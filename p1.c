@@ -25,6 +25,8 @@ void player1Logic(){
       scanf("%d",&col);
     }
 
+//send to p2
+
     if(checkBoard(board)==1){
       printBoard(board);
       printf("You win!\n");
@@ -32,7 +34,7 @@ void player1Logic(){
     }
 
     printf("Player 2 is taking their turn...\n\n");
-    //player 2 turn stuff
+//read from p1
 
     if(checkBoard(board)==2){
       printBoard(board);

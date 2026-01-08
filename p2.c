@@ -17,7 +17,7 @@ int main(){
 
   while(checkBoard(board)==0){  //function in main.c
     printf("Player 1 is taking their turn...\n\n");
-    //player 1 turn stuff
+//read from p1
 
     if(checkBoard(board)==1){
       printBoard(board);
@@ -34,6 +34,8 @@ int main(){
       scanf("%d",&col);
     }
 
+//send to p1
+
     if(checkBoard(board)==2){
       printBoard(board);
       printf("You win!\n");
@@ -44,4 +46,3 @@ int main(){
 
   return;
 }
-
