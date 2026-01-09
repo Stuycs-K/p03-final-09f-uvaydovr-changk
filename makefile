@@ -1,23 +1,22 @@
-.PHONY: clean run compile
+.PHONY: client server compile clean
 
-compile: main.o p1.o p2.o main.h
-	@gcc -Wall -o player1 p1.o main.o
-	@gcc -Wall -o player2 p2.o main.o
+compile: client server
 
-player1: p1.o
-	@./p1
+client: player.o networking.o
+	@gcc -o player player.o networking.o
 
-player2: p2.o
-	@./p2
+server: server.o networking.o
+	@gcc -o server server.o networking.o
 
-main.o: main.c main.h
-	@gcc -Wall -c main.c
+player.o: player.c networking.h
+	@gcc -c -Wall player.c
 
-p1.o: p1.c main.h
-	@gcc -Wall -c p1.c
+server.o: server.c networking.h
+	@gcc -c -Wall server.c
 
-p2.o: p2.c main.h
-	@gcc -Wall -c p2.c
+networking.o: networking.c networking.h
+	@gcc -c -Wall networking.c
 
 clean:
-	rm -f *.o player1 player2
+	rm -f *.o *~
+	rm -f player server

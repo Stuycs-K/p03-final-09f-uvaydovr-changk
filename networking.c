@@ -56,7 +56,7 @@ int server_setup(){
  *return the socket descriptor for the new socket connected to the client
  *blocks until connection is made.
  */
-int server_tcp_handshake(int listen_socket){ //server does this for each player
+int server_tcp_handshake(int listen_socket){
     int client_socket;
     struct sockaddr_storage add;
     socklen_t size=sizeof(add);
@@ -80,23 +80,27 @@ int client_tcp_handshake(char * server_address){ //both players do this with ser
   struct addrinfo * results;
   hints=calloc(1,sizeof(struct addrinfo));
   hints->ai_family=AF_INET;
-  hints->ai_socktype=SOCK_STREAM; //TCP socket
-//  hints->ai_flags =AI_PASSIVE; //Only for server?
-  getaddrinfo(server_address, "9845", hints, &results); //Server sets node to NULL
+  hints->ai_socktype=SOCK_STREAM;
+  int info = getaddrinfo(server_address, PORT, hints, &results);
+  if (info != 0) {
+  	free(hints);
+  	return -1;
+  }
 
-  int serverd;//store the socket descriptor here
-  //create the socket
-  serverd=socket(results->ai_family,results->ai_socktype,results->ai_protocol);
+  int serverd = socket(results->ai_family,results->ai_socktype,results->ai_protocol);
+  if (serverd < 0) {
+  	perror("socket");
+    free(hints);
+    freeaddrinfo(results);
+    return -1;
+  }
 
   //connect() to the server
-  if(connect(serverd,results->ai_addr,results->ai_addrlen)==-1){
-    printf("connect() error: %s\n",strerror(errno));
-    exit(1);
-  }
+  int c = connect(serverd, results->ai_addr, results->ai_addrlen);
+  err(c, "connect");
 
   free(hints);
   freeaddrinfo(results);
-
   return serverd;
 }
 

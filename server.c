@@ -1,4 +1,5 @@
 #include "networking.h"
+<<<<<<< HEAD
 
 void subserver_logic(int client_socket){
   int end=0;
@@ -54,5 +55,11 @@ int main(int argc, char *argv[] ) {
       close(client_socket);
     }
   }
+=======
+int main(void) {
+  int listen_socket = server_setup();
+  printf("Listening on port %s\n", PORT);
+  close(listen_socket);
+>>>>>>> katherine
   return 0;
 }
