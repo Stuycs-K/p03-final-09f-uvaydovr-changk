@@ -1,11 +1,10 @@
 #include "networking.h"
-<<<<<<< HEAD
 
-void subserver_logic(int client_socket){
+void subserver_logic(int player_socket){ //subserver does game, closes when game ends and sends info on who won to server
   int end=0;
   while(end==0){
     char str[256];
-    int r=recv(client_socket,str,sizeof(str),0);
+    int r=recv(player_socket,str,sizeof(str),0);
     if(r==-1){
       printf("%s\n",strerror(errno));
       exit(1);
@@ -14,16 +13,14 @@ void subserver_logic(int client_socket){
       printf("Socket closed\n\n");
       exit(1);
     }
-//printf("%s  len: %ld\n",str,strlen(str));
-  char rot[256];
-  strcpy(rot,rot13(str));
-//printf("%s  len: %ld\n\n",rot,strlen(rot));
 
-    int s=send(client_socket,rot,sizeof(rot),0);
+//    int s=send(client_socket,rot,sizeof(rot),0);
+/*
     if(s==-1){
       printf("%s\n",strerror(errno));
       exit(1);
     }
+*/
   }
 }
 
@@ -55,11 +52,11 @@ int main(int argc, char *argv[] ) {
       close(client_socket);
     }
   }
-=======
+
 int main(void) {
   int listen_socket = server_setup();
   printf("Listening on port %s\n", PORT);
   close(listen_socket);
->>>>>>> katherine
+
   return 0;
 }
