@@ -1,7 +1,7 @@
 #include "networking.h"
 
 
-void playerLogic(int server_socket, int playerTurn){ 
+void playerLogic(int server_socket, int playerTurn){
   printf("Connecting to Player %d...\n", playerTurn);
 
   char token;
@@ -41,7 +41,7 @@ void playerLogic(int server_socket, int playerTurn){
 
     if(checkBoard(board)==2){
       printBoard(board);
-      printf("Player d wins!\n", oppositePlayer);
+      printf("Player %d wins!\n", oppositePlayer);
       break;
     }
   }
