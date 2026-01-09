@@ -12,7 +12,7 @@ int server_setup(){
   //create the socket
   int sd = socket(results->ai_family,results->ai_socktype,results->ai_protocol);
   int yes = 1;
-  int sockOpt=setsockopt(clientd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes));
+  int sockOpt=setsockopt(sd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(yes));
   err(sockOpt,"sockopt  error");
 
   int b = bind(sd, results->ai_addr, results->ai_addrlen);
@@ -26,7 +26,7 @@ int server_setup(){
   free(hints);
   freeaddrinfo(results);
 
-  return clientd;
+  return sd;
 }
 
 /*Accept a connection from a client
