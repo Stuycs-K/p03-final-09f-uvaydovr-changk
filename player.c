@@ -1,36 +1,82 @@
 #include "networking.h"
 
-void clientLogic(int server_socket){
-  int end=0;
-  while(end==0){
-    char str[256];
-    printf("Input text to send to server:\n");
-    if(fgets(str,sizeof(str),stdin)==NULL){
-      printf("Client closed\n");
-      exit(1);
-    }
-    str[strlen(str)-1]='\0';
 
-    //sends to server
-    int s=send(server_socket,str,sizeof(str),0);
-    if(s==-1){
-      printf("%s\n",strerror(errno));
-      exit(1);
-    }
+void player1Logic(){ // parameter: socket?
+  printf("Connecting to Player 2...\n");
+  //TCP Handshake
 
-    //read rot
-    char rot[256];
-    int r=recv(server_socket,rot,sizeof(rot),0); //sizeof
-    if(r==-1){
-      printf("%s\n",strerror(errno));
-      exit(1);
-    }
-    if(r==0){
-      printf("Socket closed\n");
-      exit(1);
-    }
-    printf("Rotated strings:\n%s\n\n",rot);
+  char* board=malloc(42*sizeof(char));
+  for(int i=0;i<42;i++){
+    *(board+i)='_';
   }
+  printf("Your token is X\n\n");
+
+  while(checkBoard(board)==0){  //function in main.c
+    printBoard(board); //main.c
+    int col=0;
+    printf("Which column do you want to put a piece in?\n");
+    scanf("%d",&col);
+    while(updateBoard(board,col)==-1){ //main.c
+      printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+      scanf("%d",&col);
+    }
+
+    if(checkBoard(board)==1){
+      printBoard(board);
+      printf("You win!\n");
+      break;
+    }
+
+    printf("Player 2 is taking their turn...\n\n");
+    //player 2 turn stuff
+
+    if(checkBoard(board)==2){
+      printBoard(board);
+      printf("Player 2 wins!\n");
+      break;
+    }
+  }
+}
+
+
+void player2Logic(){
+ printf("Connecting to Player 1...\n");
+ //TCP Handshake
+
+ char* board=malloc(42*sizeof(char));
+ for(int i=0;i<42;i++){
+   *(board+i)='_';
+ }
+ printf("Your token is O\n\n");
+
+ while(checkBoard(board)==0){  //function in main.c
+   printf("Player 1 is taking their turn...\n\n");
+   //player 1 turn stuff
+
+   if(checkBoard(board)==1){
+     printBoard(board);
+     printf("Player 1 wins!\n");
+     break;
+   }
+
+   printBoard(board); //main.c
+   int col=0;
+   printf("Which column do you want to put a piece in?\n");
+   scanf("%d",&col);
+   while(updateBoard(board,col)==-1){ //main.c
+     printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+     scanf("%d",&col);
+   }
+
+   if(checkBoard(board)==2){
+     printBoard(board);
+     printf("You win!\n");
+     break;
+   }
+
+ }
+
+ return;
 }
 
 
