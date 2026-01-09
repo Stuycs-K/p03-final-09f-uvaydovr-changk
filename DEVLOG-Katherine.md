@@ -12,5 +12,5 @@ Discussed project in class. Trying to figure out how to start and whether to use
 Tried to work on semaphore logic at home.
 
 
-### 2026-01-08 | 2:40 PM
-Figured out that we need a server, two clients, and sockets. 
+### 2026-01-08 | ~1:30 AM
+Figured out that we need a server, two clients, and sockets in class. Started working on switching from semaphores to sockets based on prior networking lab. Created player.c to try and merge player c files. Mostly testing connections to server and clients.
