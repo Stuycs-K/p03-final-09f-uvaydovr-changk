@@ -14,3 +14,4 @@ My partner and I spent most of our class time (~25 minutes) planning how to make
 We asked Mr. K for advice during class and he told us to rework our plan and explained how we should go about it (~40 minutes), added files from networking lab for future use (5 minutes). AT HOME: Edited networking files with comments to reflect new plan (~20 minutes).
 
 ### 2026-01-09 - Editing networking files
+The files from the networking lab were worked on to make them work for this project. Not everything was updated, so I added comments to certain places where more changes needed to be made (30 minutes).
