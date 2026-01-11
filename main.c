@@ -4,7 +4,7 @@
 //returns -1 if board full with no winner
 //returns 0 if game is not over
 //returns 1 if p1 wins and 2 if p2 wins
-int checkBoard(char * board){
+int checkBoard(char board[]){
   for (int r = 0; r < ROWS; r++) {
     for (int c = 0; c < COLS; c++ ) {
       char ch = board[r * COLS + c];
