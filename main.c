@@ -5,8 +5,8 @@
 //returns 0 if game is not over
 //returns 1 if p1 wins and 2 if p2 wins
 int checkBoard(char * board){
-  for (r = 0; r < ROWS; r++) {
-    for (c = 0; c < COLS; c++ ) {
+  for (int r = 0; r < ROWS; r++) {
+    for (int c = 0; c < COLS; c++ ) {
       char ch = board[r * COLS + c];
       int player;
       if (ch == 'X') {
@@ -27,8 +27,8 @@ int checkBoard(char * board){
 
       if (r + 3 < ROWS) { // check vertically
         if (board[(r+1) * COLS + c] == ch &&
-            board[(r+1) * COLS + c] == ch &&
-            board[(r+1) * COLS + c] == ch) {
+            board[(r+2) * COLS + c] == ch &&
+            board[(r+3) * COLS + c] == ch) {
           return player;
         }
       }
@@ -96,18 +96,18 @@ ___|___|___|___|___|
 
 */
 
-int updateBoard(char * board,int col){
+int updateBoard(char * board,int col, char token){
   //updates board array
   //returns 0 if board updated
   //returns -1 if col was already filled
 
-  if (col < 0 || col > COLS) {
+  if (col < 0 || col >= COLS) {
     return -1;
   }
-  for (int r = ROWS - 1; r >= 0; r++) {
+  for (int r = ROWS - 1; r >= 0; r--) {
     int i = r * COLS + col;
     if (board[i] == '_' || board[i] == 0) {
-      board[i] = 'X';
+      board[i] = token;
       return 0;
     }
   }

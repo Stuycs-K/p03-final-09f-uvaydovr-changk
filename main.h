@@ -11,6 +11,6 @@
 void playerLogic();
 int checkBoard(char * board);
 void printBoard(char * board);
-int updateBoard(char * board,int col);
+int updateBoard(char * board,int col, char token);
 
 #endif
