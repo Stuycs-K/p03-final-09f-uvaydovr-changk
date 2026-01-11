@@ -23,7 +23,4 @@ int checkBoard(char * board);
 void printBoard(char * board);
 int updateBoard(char * board,int col);
 
-int  sem_down(int semd);
-int  sem_up(int semd);
-
 #endif

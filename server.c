@@ -1,8 +1,15 @@
 #include "networking.h"
 
-void subserver_logic(int player_socket){ //subserver does game, closes when game ends and sends info on who won to server
+void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes when game ends and sends info on who won to server
   int end=0;
   while(end==0){
+
+    int r; //receive
+    char rBuff[256];
+    int s; //send
+    char sBuff[256];
+
+/*
     char str[256];
     int r=recv(player_socket,str,sizeof(str),0);
     if(r==-1){
@@ -38,7 +45,9 @@ int main(int argc, char *argv[] ) {
 //printf("%d\n",listen_socket);
   int end=0;
   while(end==0){
-    int player_socket = server_tcp_handshake(listen_socket);
+    int p1_socket = server_tcp_handshake(listen_socket);
+    int p2_socket = server_tcp_handshake(listen_socket);
+
     printf("server connected.\n");
     int f=fork();
     if(f<0){

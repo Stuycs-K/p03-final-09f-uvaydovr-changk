@@ -2,48 +2,63 @@
 #include "main.h"
 
 void playerLogic(int server_socket, int playerTurn){
-  printf("Connecting to Player %d...\n", playerTurn);
-
   char token;
-  int oppositePlayer;
+  int oPlayer;
   char* board=malloc(42*sizeof(char));
   for(int i=0;i<42;i++){
     *(board+i)='_';
   }
 
   if(playerTurn == 1){
-      printf("Your token is X\n\n");
-      token = 'X';
-      oppositePlayer = 2;
+    oPlayer = 2;
   }
   else{
-      printf("Your token is O\n\n");
-      token = 'O';
-      oppositePlayer = 1;
+    oPlayer = 1;
+  }
+
+  int r; //receive
+  char rBuff[256];
+  int s; //send
+  char sBuff[256];
+
+  printf("Connecting to Player %d...\n", oPlayer);
+  r=recv(server_socket,rBuff,sizeof(rBuff),0);
+  err(r, "recv");
+
+  if(playerTurn==1){
+    printf("Your token is X\n\n");
+    token = 'X';
+  }
+  if(playerTurn==2){
+    printf("Your token is O\n\n");
+    token = 'O';
   }
 
   while(checkBoard(board)==0){  //function in main.c
-    printBoard(board); //main.c
-    int col=0;
-    printf("Which column do you want to put a piece in?\n");
-    scanf("%d",&col);
-    while(updateBoard(board,col)==-1){ //main.c
-      printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+    if(playerTurn==1){
+      printBoard(board); //main.c
+      int col=0;
+      printf("Which column do you want to put a piece in?\n");
       scanf("%d",&col);
+      while(updateBoard(board,col)==-1){ //main.c
+        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        scanf("%d",&col);
+      }
+
+      if(checkBoard(board)==1){
+        printBoard(board);
+        printf("You win!\n");
+        break;
+      }
+
+      printf("Player %d is taking their turn...\n\n", oPlayer);
     }
-
-    if(checkBoard(board)==1){
-      printBoard(board);
-      printf("You win!\n");
-      break;
-    }
-
-    printf("Player %d is taking their turn...\n\n", oppositePlayer);
-
-    if(checkBoard(board)==2){
-      printBoard(board);
-      printf("Player %d wins!\n", oppositePlayer);
-      break;
+    else{  //p2
+      if(checkBoard(board)==2){
+        printBoard(board);
+        printf("Player %d wins!\n", oPlayer);
+        break;
+      }
     }
   }
 }
