@@ -1,33 +1,26 @@
 #include "networking.h"
 
 void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes when game ends and sends info on who won to server
+  int r; //receive
+  int s; //send
+  int* buff=malloc(sizeof(int));
+
+  s=send(p1_socket,buff,sizeof(buff),0);
+  s=send(p2_socket,buff,sizeof(buff),0);
+
   int end=0;
   while(end==0){
+    r=recv(p1_socket,(char *) buff,sizeof(buff),0);
+    err(r,"recv error");
+//    printf("col: %d\n",*buff);
+    s=send(p2_socket,(char *) buff,sizeof(buff),0);
+    err(s,"send error");
 
-    int r; //receive
-    char rBuff[256];
-    int s; //send
-    char sBuff[256];
-
-/*
-    char str[256];
-    int r=recv(player_socket,str,sizeof(str),0);
-    if(r==-1){
-      printf("%s\n",strerror(errno));
-      exit(1);
-    }
-    if(r==0){
-      printf("Socket closed\n\n");
-      exit(1);
-    }
-
-//    int s=send(client_socket,rot,sizeof(rot),0);
-/*
-    if(s==-1){
-      printf("%s\n",strerror(errno));
-      exit(1);
-    }
-*/
+    r=recv(p2_socket,(char *) buff,sizeof(buff),0);
+    err(r,"recv error");
+//    printf("col: %d\n",*buff);
+    s=send(p1_socket,(char *) buff,sizeof(buff),0);
+    err(s,"send error");
   }
 }
 
@@ -45,7 +38,7 @@ int main(int argc, char *argv[] ) {
 //printf("%d\n",listen_socket);
   int end=0;
   while(end==0){
-    int p1_socket = server_tcp_handshake(listen_socket);
+    int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket);
 
     printf("server connected.\n");
@@ -55,10 +48,11 @@ int main(int argc, char *argv[] ) {
       exit(1);
     }
     if(f==0){ //subserver
-      subserver_logic(player_socket);
+      subserver_logic(p1_socket,p2_socket);
     }
     else{ //parent server
-      close(player_socket);
+      close(p1_socket);
+      close(p2_socket);
     }
   }
 }

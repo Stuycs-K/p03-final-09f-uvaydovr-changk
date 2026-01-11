@@ -17,13 +17,14 @@ void playerLogic(int server_socket, int playerTurn){
   }
 
   int r; //receive
-  char rBuff[256];
+  int* rBuff=malloc(sizeof(int));
   int s; //send
-  char sBuff[256];
+  int* sBuff=malloc(sizeof(int));
 
   printf("Connecting to Player %d...\n", oPlayer);
   r=recv(server_socket,rBuff,sizeof(rBuff),0);
   err(r, "recv");
+  printf("Connected to Player %d!\n\n", oPlayer);
 
   if(playerTurn==1){
     printf("Your token is X\n\n");
@@ -34,10 +35,11 @@ void playerLogic(int server_socket, int playerTurn){
     token = 'O';
   }
 
-  while(checkBoard(board)==0){  //function in main.c
+  int col=0;
+  int check=checkBoard(board); //0
+  while(check==0){  //function in main.c
     if(playerTurn==1){
       printBoard(board); //main.c
-      int col=0;
       printf("Which column do you want to put a piece in?\n");
       scanf("%d",&col);
       while(updateBoard(board,col)==-1){ //main.c
@@ -45,21 +47,46 @@ void playerLogic(int server_socket, int playerTurn){
         scanf("%d",&col);
       }
 
-      if(checkBoard(board)==1){
-        printBoard(board);
-        printf("You win!\n");
-        break;
-      }
+      *sBuff=col;
+      s=send(server_socket,(char *) sBuff,sizeof(sBuff),0);
+      err(s,"send error");
 
       printf("Player %d is taking their turn...\n\n", oPlayer);
+      r=recv(server_socket,(char *) rBuff,sizeof(rBuff),0);
+      err(r,"recv error");
+      col=*rBuff;
+      updateBoard(board,col);
     }
+
+
     else{  //p2
-      if(checkBoard(board)==2){
-        printBoard(board);
-        printf("Player %d wins!\n", oPlayer);
-        break;
+      printf("Player %d is taking their turn...\n\n", oPlayer);
+      r=recv(server_socket,(char *) rBuff,sizeof(rBuff),0);
+      err(r,"recv error");
+      col=*rBuff;
+      updateBoard(board,col);
+
+      printBoard(board); //main.c
+      printf("Which column do you want to put a piece in?\n");
+      scanf("%d",&col);
+      while(updateBoard(board,col)==-1){ //main.c
+        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        scanf("%d",&col);
       }
+
+      *sBuff=col;
+      s=send(server_socket,(char *) sBuff,sizeof(sBuff),0);
+      err(s,"send error");
     }
+
+    check=checkBoard(board);
+  }
+
+  if(check==playerTurn){
+    printf("You win!");
+  }
+  else{
+    printf("Player %d wins!",oPlayer);
   }
 }
 
@@ -76,7 +103,7 @@ int main(int argc, char *argv[]) {
   int sd = player_tcp_handshake(IP);
 
   if (sd < 0) { printf("connect failed\n"); return 1; }
-  printf("connected\n");
+  printf("Connected to server\n\n");
 
   playerLogic(sd,pNum);
 
@@ -84,3 +111,16 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+
+/*
+void turn(){
+  printBoard(board); //main.c
+  int col=0;
+  printf("Which column do you want to put a piece in?\n");
+  scanf("%d",&col);
+  while(updateBoard(board,col)==-1){ //main.c
+    printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+    scanf("%d",&col);
+  }
+}
+*/

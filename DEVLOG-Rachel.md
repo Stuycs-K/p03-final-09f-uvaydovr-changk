@@ -15,3 +15,6 @@ We asked Mr. K for advice during class and he told us to rework our plan and exp
 
 ### 2026-01-09 - Editing networking files
 The files from the networking lab were worked on to make them work for this project. Not everything was updated, so I added comments to certain places where more changes needed to be made (30 minutes).
+
+### 2026-01-10 - Debugging+Updating files, Working versions of playerLogic and subserver_logic
+After we reworked our plan, a lot of our old code got pushed to the side but we still needed it so I updated the makefile to correctly use main.c and main.h, I fixed an error with the player handshake function, I also changed old code that was causing errors because it was using player1Logic and player2Logic instead of our new playerLogic (1 hour). Reworked subserver_logic to take 2 sockets (one for each player), changed Server main() to incorporate both sockets as well, added the server logic so it reads from P1, sends to P2, reads from P2, then sends to P1 and so on, did the same for the playerLogic and main() functions in player.c, planning to make playerLogic less repetitive by using a helper function in the future (2 hours).
