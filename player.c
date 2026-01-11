@@ -50,6 +50,22 @@ void playerLogic(int server_socket, int playerTurn){
         scanf("%d",&col);
       }
     }
+
+    send(server_socket, &col, sizeof(col), 0);
+
+    status = checkBoard(board);
+    if (status == 1) {
+      printBoard(board);
+      printf("You win!\n");
+      break;
+    } else if (status == -1) {
+      printBoard(board);
+      printf("Board full. Draw.\n");
+      break;
+    }
+
+    
+
   }
 
 }
