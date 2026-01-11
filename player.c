@@ -64,7 +64,7 @@ void playerLogic(int server_socket, int playerTurn){
       break;
     }
 
-    
+     
 
   }
 
