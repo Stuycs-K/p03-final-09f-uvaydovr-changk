@@ -1,11 +1,64 @@
 #include "main.h"
 
+//checks board to see if game is over
+//returns -1 if board full with no winner
+//returns 0 if game is not over
+//returns 1 if p1 wins and 2 if p2 wins
 int checkBoard(char * board){
-  //checks board to see if game is over
-  //returns -1 if board full with no winner
-  //returns 0 if game is not over
-  //returns 1 if p1 wins and 2 if p2 wins
-  return 0;
+  for (r = 0; r < ROWS; r++) {
+    for (c = 0; c < COLS; c++ ) {
+      char ch = board[r * COLS + c];
+      int player;
+      if (ch == 'X') {
+        player = 1;
+      } else if (ch == 'O') {
+        player = 2;
+      } else {
+        continue;
+      }
+
+      if (c + 3 < COLS) { // check horizontally
+        if (board[r * COLS + (c + 1)] == ch &&
+            board[r * COLS + (c + 2)] == ch &&
+            board[r * COLS + (c + 3)] == ch) {
+          return player;
+        }
+      }
+
+      if (r + 3 < ROWS) { // check vertically
+        if (board[(r+1) * COLS + c] == ch &&
+            board[(r+1) * COLS + c] == ch &&
+            board[(r+1) * COLS + c] == ch) {
+          return player;
+        }
+      }
+
+      if (r + 3 < ROWS && c + 3 < COLS) {
+        if (board[(r + 1) * COLS + (c + 1)] == ch &&
+            board[(r + 2) * COLS + (c + 2)] == ch &&
+            board[(r + 3) * COLS + (c + 3)] == ch) {
+          return player;
+        }
+      }
+
+      if (r - 3 >= 0 && c + 3 < COLS) {
+        if (board[(r - 1) * COLS + (c + 1)] == ch &&
+            board[(r - 2) * COLS + (c + 2)] == ch &&
+            board[(r - 3) * COLS + (c + 3)] == ch) {
+          return player;
+        }
+      }
+
+    }
+  }
+
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    if (board[i] == '_' || board[i] == 0) {
+      return 0;
+    }
+  }
+
+  return -1;
 }
 
 void printBoard(char * board){
@@ -16,7 +69,11 @@ void printBoard(char * board){
   // *Actual board has more rows and columns
   // *numbering may change
 
-  printf("\n 0 1 2 3 4 5 6\n");
+  printf("\n ");
+  for (int c = 0; c < COLS; c++) {
+    printf("%d ", c);
+  }
+  printf("\n");
   for(int r = 0; r < ROWS; r++) {
     printf("%d", r);
     for (int c = 0; c < COLS; c++) {
@@ -48,7 +105,7 @@ int updateBoard(char * board,int col){
     return -1;
   }
   for (int r = ROWS - 1; r >= 0; r++) {
-    int i = 0;
+    int i = r * COLS + col;
     if (board[i] == '_' || board[i] == 0) {
       board[i] = 'X';
       return 0;
