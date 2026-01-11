@@ -48,7 +48,7 @@ int updateBoard(char * board,int col){
     return -1;
   }
   for (int r = ROWS - 1; r >= 0; r++) {
-    int i =
+    int i = 0;
     if (board[i] == '_' || board[i] == 0) {
       board[i] = 'X';
       return 0;

@@ -1,5 +1,5 @@
 #include "networking.h"
-
+#include "main.h"
 
 void playerLogic(int server_socket, int playerTurn){
   printf("Connecting to Player %d...\n", playerTurn);
@@ -11,11 +11,12 @@ void playerLogic(int server_socket, int playerTurn){
     *(board+i)='_';
   }
 
-  if (playerTurn == 1) {
+  if(playerTurn == 1){
       printf("Your token is X\n\n");
       token = 'X';
       oppositePlayer = 2;
-  } elseif (playerTurn == 2) {
+  }
+  else{
       printf("Your token is O\n\n");
       token = 'O';
       oppositePlayer = 1;
@@ -49,13 +50,22 @@ void playerLogic(int server_socket, int playerTurn){
 
 int main(int argc, char *argv[]) {
   char *IP = "127.0.0.1";
-  if (argc > 1) IP = argv[1];
-  int sd = client_tcp_handshake(IP);
+  int pNum=0;
+  if(argc==1){
+    printf("Add argument '1' to be Player 1\n");
+    printf("Add argument '2' to be Player 2\n");
+    return -1;
+  }
+  pNum=(int) strtol(argv[1],NULL,10);
+//printf("%d\n",pNum);
+  int sd = player_tcp_handshake(IP);
+
   if (sd < 0) { printf("connect failed\n"); return 1; }
   printf("connected\n");
 
-  player1Logic(sd);
+  playerLogic(sd,pNum);
 
   close(sd);
+
   return 0;
 }

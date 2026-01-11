@@ -18,8 +18,7 @@
 #define COLS 7
 #define BOARD_SIZE (ROWS * COLS)
 
-void player1Logic();
-void player2Logic();
+void playerLogic();
 int checkBoard(char * board);
 void printBoard(char * board);
 int updateBoard(char * board,int col);
