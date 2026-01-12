@@ -77,15 +77,6 @@ void printBoard(char * board){
   printf("\n");
 }
 
-/*
-
-_1_|_2_|_3_|_4_|_5_|
-___|___|___|___|___|
-___|___|___|___|___|
-___|___|___|___|___|
-
-*/
-
 int updateBoard(char * board,int col, char token){
   //updates board array
   //returns 0 if board updated

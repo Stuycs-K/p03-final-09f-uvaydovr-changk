@@ -98,7 +98,6 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   pNum=(int) strtol(argv[1],NULL,10);
-//printf("%d\n",pNum);
   int sd = player_tcp_handshake(IP);
 
   if (sd < 0) { printf("connect failed\n"); return 1; }

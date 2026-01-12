@@ -25,12 +25,14 @@ int main(int argc, char *argv[] ) {
 
  //Forking
   int listen_socket = server_setup();
-  printf("Listening on port %s\n", PORT);
+  printf("Listening on port %s\n\n", PORT);
 //printf("%d\n",listen_socket);
   while(1){
+//    int p1_socket;
+//    int p2_socket;
     int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket); // ***
-    printf("server connected 2 players.\n");
+    printf("server connected 2 players.\n\n");
 
     int f=fork();
     if(f<0){

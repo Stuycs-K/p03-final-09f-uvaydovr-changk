@@ -21,3 +21,5 @@ After we reworked our plan, a lot of our old code got pushed to the side but we 
 
 ### 2026-01-11 - Fixed makefile+renamed files
 I merged main with my partner's new code to my branch in order to test out her code to make sure it worked with mine. When I tried to run everything, it wasn't working and I realized something was wrong with the makefile, so I fixed it (10 minutes). I renamed main.c and main.h to game.c and game.h (more fitting names) and changed the other files accordingly (5 minutes). Lastly, I tested the code and besides the issues with the makefile, everything ran smoothly, except I realized the game wasn't ending when someone won, but did actually end once randomly after a non-game-ending move, so there must be an error with the checkBoard function. I don't have time to fix it currently so I'll notify my partner and try to look at it later if I have the time.
+
+### 2026-01-12 - Updated printBoard+added to-do list
