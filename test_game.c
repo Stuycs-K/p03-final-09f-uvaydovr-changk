@@ -1,4 +1,4 @@
-#include "main.h"
+#include "game.h"
 
 int main(void) {
   char board[BOARD_SIZE];
@@ -11,26 +11,31 @@ int main(void) {
 
   int currentPlayer = 1;
   char token;
+  char oppToken;
 
   while (1) {
     printBoard(board);
 
-    int status = checkBoard(board);
-    if (status == 1) {
-      printf("Player 1 (X) wins!\n");
-      break;
-    } else if (status == 2) {
-      printf("Player 2 (O) wins!\n");
-      break;
-    } else if (status == -1) {
-      printf("Board full, draw.\n");
-      break;
-    }
-
     if (currentPlayer == 1) {
       token = 'X';
+      oppToken = 'O';
     } else {
       token = 'O';
+      oppToken = 'X';
+    }
+
+
+    char result = checkBoard(board);  //function in main.c
+    printf("CHECKBOARD: %c \n", result);
+    if (result == token) {
+      printf("You win!\n");
+      break;
+    } else if (result == oppToken) {
+      printf("Player 2 wins!\n");
+      break;
+    } else if (result == 'D') {
+      printf("Board full. Draw.\n");
+      break;
     }
 
     printf("Player %d (%c), choose a column (0-%d): ", currentPlayer, token, COLS - 1);

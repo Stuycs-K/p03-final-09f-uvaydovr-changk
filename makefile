@@ -1,6 +1,6 @@
-.PHONY: player server compile clean
+.PHONY: player server compile clean game_test
 
-compile: player.o server.o networking.o game.o
+compile: player.o server.o networking.o game.o test_game.o
 	@gcc -o player player.o networking.o game.o
 	@gcc -o server server.o networking.o
 
@@ -24,4 +24,10 @@ networking.o: networking.c networking.h
 
 clean:
 	rm -f *.o *~
-	rm -f player server
+	rm -f player server game_test
+
+game_test: test_game.o game.o
+	@gcc -o game_test test_game.o game.o
+
+test_game.o: test_game.c game.h
+	@gcc -c -Wall test_game.c

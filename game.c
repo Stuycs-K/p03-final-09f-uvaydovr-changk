@@ -7,19 +7,29 @@ char checkBoard(char board[]){
     for (int c = 0; c < COLS; c++ ) {
       char ch = board[r * COLS + c];
 
+      char token;
+
+      if (ch == 'X') {
+        token = 'X';
+      } else if (ch == 'O') {
+        token = 'O';
+      } else {
+        continue;
+      }
+
       if (c + 3 < COLS) { // check horizontally
         if (board[r * COLS + (c + 1)] == ch &&
             board[r * COLS + (c + 2)] == ch &&
             board[r * COLS + (c + 3)] == ch) {
-          return ch;
+          return token;
         }
       }
-
+      
       if (r + 3 < ROWS) { // check vertically
         if (board[(r+1) * COLS + c] == ch &&
             board[(r+2) * COLS + c] == ch &&
             board[(r+3) * COLS + c] == ch) {
-          return ch;
+          return token;
         }
       }
 
@@ -27,7 +37,7 @@ char checkBoard(char board[]){
         if (board[(r + 1) * COLS + (c + 1)] == ch &&
             board[(r + 2) * COLS + (c + 2)] == ch &&
             board[(r + 3) * COLS + (c + 3)] == ch) {
-          return ch;
+          return token;
         }
       }
 
@@ -35,7 +45,7 @@ char checkBoard(char board[]){
         if (board[(r - 1) * COLS + (c + 1)] == ch &&
             board[(r - 2) * COLS + (c + 2)] == ch &&
             board[(r - 3) * COLS + (c + 3)] == ch) {
-          return ch;
+          return token;
         }
       }
 
