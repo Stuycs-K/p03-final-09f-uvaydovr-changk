@@ -14,7 +14,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
-#define BUFFER_SIZE 1024
+#define PORT "19230"
 
 void err(int i, char*message);
 int server_setup();
