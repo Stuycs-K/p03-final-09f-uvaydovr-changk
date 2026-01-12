@@ -3,17 +3,24 @@
 
 void playerLogic(int server_socket, int playerTurn){
   char token;
-  int oPlayer;
-  char* board=malloc(42*sizeof(char));
-  for(int i=0;i<42;i++){
-    *(board+i)='_';
+  char opp_token;
+  int oppositePlayer;
+
+  char board[BOARD_SIZE];
+  for (i = 0; i < BOARD_SIZE; i++) {
+    board[i] = '_';
   }
 
-  if(playerTurn == 1){
-    oPlayer = 2;
-  }
-  else{
-    oPlayer = 1;
+  if (playerTurn == 1) {
+      printf("Your token is X\n\n");
+      token = 'X';
+      opp_token = 'O';
+      oppositePlayer = 2;
+  } else if (playerTurn == 2) {
+      printf("Your token is O\n\n");
+      token = 'O';
+      opp_token = 'X';
+      oppositePlayer = 1;
   }
 
   int r; //receive
@@ -22,26 +29,19 @@ void playerLogic(int server_socket, int playerTurn){
   int* sBuff=malloc(sizeof(int));
 
   printf("Connecting to Player %d...\n", oPlayer);
-  r=recv(server_socket,rBuff,sizeof(rBuff),0);
+  r = recv(server_socket,rBuff,sizeof(rBuff),0);
   err(r, "recv");
   printf("Connected to Player %d!\n\n", oPlayer);
 
-  if(playerTurn==1){
-    printf("Your token is X\n\n");
-    token = 'X';
-  }
-  if(playerTurn==2){
-    printf("Your token is O\n\n");
-    token = 'O';
-  }
-
   int col=0;
   int check=checkBoard(board); //0
-  while(check==0){  //function in main.c
-    if(playerTurn==1){
+
+  while(check == 0){  //function in main.c
+    if(playerTurn == 1){
       printBoard(board); //main.c
       printf("Which column do you want to put a piece in?\n");
       scanf("%d",&col);
+
       while(updateBoard(board,col)==-1){ //main.c
         printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
         scanf("%d",&col);
