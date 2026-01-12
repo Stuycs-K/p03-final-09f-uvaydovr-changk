@@ -1,26 +1,24 @@
-.PHONY: client server compile clean player
+.PHONY: player server compile clean
 
-compile: player.o server.o networking.o main.o
-	@gcc -o player player.o networking.o main.o
-	@gcc -o server server.o networking.o
+compile: player server
 
-player:
-	@./player $(ARGS)
-
-server:
-	@./server
+player: player.o main.o networking.o
+	@gcc -o player player.o main.o networking.o
 
 player.o: player.c networking.h main.h
 	@gcc -c -Wall player.c
 
+server: server.o networking.o
+	@gcc -o server server.o networking.o
+
 server.o: server.c networking.h
 	@gcc -c -Wall server.c
 
-networking.o: networking.c networking.h
-	@gcc -c -Wall networking.c
-
 main.o: main.c main.h
 	@gcc -c -Wall main.c
+
+networking.o: networking.c networking.h
+	@gcc -c -Wall networking.c
 
 clean:
 	rm -f *.o *~

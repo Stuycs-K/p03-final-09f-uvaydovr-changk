@@ -3,90 +3,85 @@
 
 void playerLogic(int server_socket, int playerTurn){
   char token;
-  int oPlayer;
-  char* board=malloc(42*sizeof(char));
-  for(int i=0;i<42;i++){
-    *(board+i)='_';
+  char oppToken;
+  int oppositePlayer;
+
+  char board[BOARD_SIZE];
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    board[i] = '_';
   }
 
-  if(playerTurn == 1){
-    oPlayer = 2;
-  }
-  else{
-    oPlayer = 1;
+  if (playerTurn == 1) {
+      printf("Your token is X\n\n");
+      token = 'X';
+      oppToken = 'O';
+      oppositePlayer = 2;
+  } else if (playerTurn == 2) {
+      printf("Your token is O\n\n");
+      token = 'O';
+      oppToken = 'X';
+      oppositePlayer = 1;
+  } else {
+    printf("Invalid player number %d \n", playerTurn);
+    return;
   }
 
-  int r; //receive
-  int* rBuff=malloc(sizeof(int));
-  int s; //send
-  int* sBuff=malloc(sizeof(int));
+  int rBuff = 0;
+  int sBuff = 0;
 
-  printf("Connecting to Player %d...\n", oPlayer);
-  r=recv(server_socket,rBuff,sizeof(rBuff),0);
+  printf("Connecting to Player %d...\n", oppositePlayer);
+  int r = recv(server_socket, &rBuff,sizeof(rBuff),0);
   err(r, "recv");
-  printf("Connected to Player %d!\n\n", oPlayer);
+  printf("Connected to Player %d!\n\n", oppositePlayer);
 
-  if(playerTurn==1){
-    printf("Your token is X\n\n");
-    token = 'X';
-  }
-  if(playerTurn==2){
-    printf("Your token is O\n\n");
-    token = 'O';
-  }
+  int currentTurn = 1;
+  while(1){
+    printBoard(board); //main.c
 
-  int col=0;
-  int check=checkBoard(board); //0
-  while(check==0){  //function in main.c
-    if(playerTurn==1){
-      printBoard(board); //main.c
-      printf("Which column do you want to put a piece in?\n");
-      scanf("%d",&col);
-      while(updateBoard(board,col)==-1){ //main.c
-        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
-        scanf("%d",&col);
-      }
-
-      *sBuff=col;
-      s=send(server_socket,(char *) sBuff,sizeof(sBuff),0);
-      err(s,"send error");
-
-      printf("Player %d is taking their turn...\n\n", oPlayer);
-      r=recv(server_socket,(char *) rBuff,sizeof(rBuff),0);
-      err(r,"recv error");
-      col=*rBuff;
-      updateBoard(board,col);
+    char result = checkBoard(board);  //function in main.c
+    if (result == token) {
+      printf("You win!\n");
+      break;
+    } else if (result == oppToken) {
+      printf("Player %d wins!\n", oppositePlayer);
+      break;
+    } else if (result == 'D') {
+      printf("Board full. Draw.\n");
+      break;
     }
 
-
-    else{  //p2
-      printf("Player %d is taking their turn...\n\n", oPlayer);
-      r=recv(server_socket,(char *) rBuff,sizeof(rBuff),0);
-      err(r,"recv error");
-      col=*rBuff;
-      updateBoard(board,col);
-
-      printBoard(board); //main.c
+    if (currentTurn == playerTurn) {
+      int col;
       printf("Which column do you want to put a piece in?\n");
-      scanf("%d",&col);
-      while(updateBoard(board,col)==-1){ //main.c
-        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
-        scanf("%d",&col);
+      if (scanf("%d", &col) != 1) {
+        printf("Input error, quitting.\n");
+        return;
       }
 
-      *sBuff=col;
-      s=send(server_socket,(char *) sBuff,sizeof(sBuff),0);
+      while(updateBoard(board,col, token)==-1){ //main.c
+        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        if (scanf("%d", &col) != 1) {
+          printf("Input error, quitting.\n");
+          return;
+        }
+      }
+
+      sBuff=col;
+      int s=send(server_socket,&sBuff,sizeof(sBuff),0);
       err(s,"send error");
+    } else {
+      printf("Player %d is taking their turn...\n\n", oppositePlayer);
+      int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
+      err(r,"recv error");
+      col=rBuff;
+      updateBoard(board,col, oppToken);
     }
 
-    check=checkBoard(board);
-  }
-
-  if(check==playerTurn){
-    printf("You win!");
-  }
-  else{
-    printf("Player %d wins!",oPlayer);
+    if (currentTurn == 1) {
+      currentTurn = 2;
+    } else {
+      currentTurn = 1;
+    }
   }
 }
 
@@ -111,16 +106,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
-/*
-void turn(){
-  printBoard(board); //main.c
-  int col=0;
-  printf("Which column do you want to put a piece in?\n");
-  scanf("%d",&col);
-  while(updateBoard(board,col)==-1){ //main.c
-    printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
-    scanf("%d",&col);
-  }
-}
-*/

@@ -1,26 +1,16 @@
 #include "networking.h"
 
 void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes when game ends and sends info on who won to server
-  int r; //receive
-  int s; //send
-  int* buff=malloc(sizeof(int));
+  int buff = 0;
+  send(p1_socket,&buff,sizeof(buff),0);
+  send(p2_socket,&buff,sizeof(buff),0);
 
-  s=send(p1_socket,buff,sizeof(buff),0);
-  s=send(p2_socket,buff,sizeof(buff),0);
+  while(1){
+    recv(p1_socket,&buff,sizeof(buff),0);
+    send(p2_socket,&buff,sizeof(buff),0);
 
-  int end=0;
-  while(end==0){
-    r=recv(p1_socket,(char *) buff,sizeof(buff),0);
-    err(r,"recv error");
-//    printf("col: %d\n",*buff);
-    s=send(p2_socket,(char *) buff,sizeof(buff),0);
-    err(s,"send error");
-
-    r=recv(p2_socket,(char *) buff,sizeof(buff),0);
-    err(r,"recv error");
-//    printf("col: %d\n",*buff);
-    s=send(p1_socket,(char *) buff,sizeof(buff),0);
-    err(s,"send error");
+    recv(p2_socket,&buff,sizeof(buff),0);
+    send(p1_socket,&buff,sizeof(buff),0);
   }
 }
 
@@ -35,34 +25,30 @@ int main(int argc, char *argv[] ) {
 
  //Forking
   int listen_socket = server_setup();
+  printf("Listening on port %s\n", PORT);
 //printf("%d\n",listen_socket);
-  int end=0;
-  while(end==0){
+  while(1){
     int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket);
+    printf("server connected 2 players.\n");
 
-    printf("server connected.\n");
     int f=fork();
     if(f<0){
       printf("%s\n",strerror(errno));
+      close(p1_socket);
+      close(p2_socket);
       exit(1);
     }
     if(f==0){ //subserver
-      subserver_logic(p1_socket,p2_socket);
+      close(listen_socket);
+      subserver_logic(p1_socket, p2_socket);
+      close(p1_socket);
+      close(p2_socket);
     }
     else{ //parent server
       close(p1_socket);
       close(p2_socket);
     }
   }
-}
-
-/*
-int main(){
-  int listen_socket = server_setup();
-  printf("Listening on port %s\n", PORT);
   close(listen_socket);
-
-  return 0;
 }
-*/
