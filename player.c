@@ -21,32 +21,31 @@ void playerLogic(int server_socket, int playerTurn){
       token = 'O';
       oppToken = 'X';
       oppositePlayer = 1;
+  } else {
+    printf("Invalid player number %d \n", playerTurn);
+    return;
   }
 
-  int r; //receive
-  int* rBuff=malloc(sizeof(int));
-  int s; //send
-  int* sBuff=malloc(sizeof(int));
+  int rBuff = 0;
+  int sBuff = 0;
 
   printf("Connecting to Player %d...\n", oppositePlayer);
-  r = recv(server_socket,rBuff,sizeof(rBuff),0);
+  int r = recv(server_socket, &rBuff,sizeof(rBuff),0);
   err(r, "recv");
   printf("Connected to Player %d!\n\n", oppositePlayer);
-
-  int col=0;
 
   int currentTurn = 1;
   while(1){
     printBoard(board); //main.c
 
-    int status = checkBoard(board);  //function in main.c
-    if (status == 1) {
-      printf("You win! \n");
+    char result = checkBoard(board);  //function in main.c
+    if (result == token) {
+      printf("You win!\n");
       break;
-    } else if (status == 2) {
+    } else if (result == oppToken) {
       printf("Player %d wins!\n", oppositePlayer);
       break;
-    } else if (status == -1) {
+    } else if (result == 'D') {
       printf("Board full. Draw.\n");
       break;
     }
@@ -54,21 +53,27 @@ void playerLogic(int server_socket, int playerTurn){
     if (currentTurn == playerTurn) {
       int col;
       printf("Which column do you want to put a piece in?\n");
-      scanf("%d",&col);
+      if (scanf("%d", &col) != 1) {
+        printf("Input error, quitting.\n");
+        return;
+      }
 
       while(updateBoard(board,col, token)==-1){ //main.c
         printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
-        scanf("%d",&col);
+        if (scanf("%d", &col) != 1) {
+          printf("Input error, quitting.\n");
+          return;
+        }
       }
 
-      *sBuff=col;
-      s=send(server_socket,(char *) sBuff,sizeof(sBuff),0);
+      sBuff=col;
+      int s=send(server_socket,&sBuff,sizeof(sBuff),0);
       err(s,"send error");
     } else {
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
-      r=recv(server_socket,(char *) rBuff,sizeof(rBuff),0);
+      int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
       err(r,"recv error");
-      col=*rBuff;
+      col=rBuff;
       updateBoard(board,col, oppToken);
     }
 

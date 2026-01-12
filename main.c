@@ -1,27 +1,17 @@
 #include "main.h"
 
 //checks board to see if game is over
-//returns -1 if board full with no winner
-//returns 0 if game is not over
-//returns 1 if p1 wins and 2 if p2 wins
-int checkBoard(char board[]){
+//returns which token wins
+char checkBoard(char board[]){
   for (int r = 0; r < ROWS; r++) {
     for (int c = 0; c < COLS; c++ ) {
       char ch = board[r * COLS + c];
-      int player;
-      if (ch == 'X') {
-        player = 1;
-      } else if (ch == 'O') {
-        player = 2;
-      } else {
-        continue;
-      }
 
       if (c + 3 < COLS) { // check horizontally
         if (board[r * COLS + (c + 1)] == ch &&
             board[r * COLS + (c + 2)] == ch &&
             board[r * COLS + (c + 3)] == ch) {
-          return player;
+          return ch;
         }
       }
 
@@ -29,7 +19,7 @@ int checkBoard(char board[]){
         if (board[(r+1) * COLS + c] == ch &&
             board[(r+2) * COLS + c] == ch &&
             board[(r+3) * COLS + c] == ch) {
-          return player;
+          return ch;
         }
       }
 
@@ -37,7 +27,7 @@ int checkBoard(char board[]){
         if (board[(r + 1) * COLS + (c + 1)] == ch &&
             board[(r + 2) * COLS + (c + 2)] == ch &&
             board[(r + 3) * COLS + (c + 3)] == ch) {
-          return player;
+          return ch;
         }
       }
 
@@ -45,7 +35,7 @@ int checkBoard(char board[]){
         if (board[(r - 1) * COLS + (c + 1)] == ch &&
             board[(r - 2) * COLS + (c + 2)] == ch &&
             board[(r - 3) * COLS + (c + 3)] == ch) {
-          return player;
+          return ch;
         }
       }
 
@@ -58,7 +48,7 @@ int checkBoard(char board[]){
     }
   }
 
-  return -1;
+  return 'D';
 }
 
 void printBoard(char * board){
