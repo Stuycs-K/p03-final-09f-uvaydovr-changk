@@ -56,13 +56,3 @@ int main(int argc, char *argv[] ) {
     }
   }
 }
-
-/*
-int main(){
-  int listen_socket = server_setup();
-  printf("Listening on port %s\n", PORT);
-  close(listen_socket);
-
-  return 0;
-}
-*/
