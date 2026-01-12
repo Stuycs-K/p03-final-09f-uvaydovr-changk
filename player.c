@@ -58,7 +58,12 @@ void playerLogic(int server_socket, int playerTurn){
       }
 
       while(updateBoard(board,col, token)==-1){ //main.c
-        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        if(col>6||col<0){
+          printf("Column %d does not exist. Please enter a valid column number:\n",col);
+        }
+        else{
+          printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        }
         if (scanf("%d", &col) != 1) {
           printf("Input error, quitting.\n");
           return;
@@ -93,7 +98,6 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   pNum=(int) strtol(argv[1],NULL,10);
-//printf("%d\n",pNum);
   int sd = player_tcp_handshake(IP);
 
   if (sd < 0) { printf("connect failed\n"); return 1; }
