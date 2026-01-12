@@ -1,21 +1,23 @@
 .PHONY: player server compile clean
 
-compile: player server
+compile: player.o server.o networking.o game.o
+	@gcc -o player player.o networking.o game.o
+	@gcc -o server server.o networking.o
 
-player: player.o main.o networking.o
-	@gcc -o player player.o main.o networking.o
+player:
+	@./player $(ARGS)
 
-player.o: player.c networking.h main.h
+player.o: player.c networking.h game.h
 	@gcc -c -Wall player.c
 
-server: server.o networking.o
-	@gcc -o server server.o networking.o
+server:
+	@./server
 
 server.o: server.c networking.h
 	@gcc -c -Wall server.c
 
-main.o: main.c main.h
-	@gcc -c -Wall main.c
+game.o: game.c game.h
+	@gcc -c -Wall game.c
 
 networking.o: networking.c networking.h
 	@gcc -c -Wall networking.c
