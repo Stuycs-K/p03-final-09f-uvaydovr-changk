@@ -1,4 +1,4 @@
-#include "main.h"
+#include "game.h"
 
 //checks board to see if game is over
 //returns which token wins
@@ -103,13 +103,6 @@ int updateBoard(char * board,int col, char token){
   }
   return -1;
 }
-
-// board.txt:
-// store tokens in a file as numbered rows
-// player inputs a column number (maybe mod by column number like 3)
-// boxes are numbered
-// prints out grid _file[0]_| repeatedly
-// file probably created in main and filled with _
 
 // user input >> 2
 // take the number, looks at the array for that column

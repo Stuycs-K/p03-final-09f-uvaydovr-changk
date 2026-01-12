@@ -1,5 +1,5 @@
 #include "networking.h"
-#include "main.h"
+#include "game.h"
 
 void playerLogic(int server_socket, int playerTurn){
   char token;
@@ -22,7 +22,7 @@ void playerLogic(int server_socket, int playerTurn){
       oppToken = 'X';
       oppositePlayer = 1;
   } else {
-    printf("Invalid player number %d \n", playerTurn);
+    printf("Invalid player number %d.\nPlease input either 1 or 2\n", playerTurn);
     return;
   }
 
@@ -49,9 +49,8 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Board full. Draw.\n");
       break;
     }
-
+    int col;
     if (currentTurn == playerTurn) {
-      int col;
       printf("Which column do you want to put a piece in?\n");
       if (scanf("%d", &col) != 1) {
         printf("Input error, quitting.\n");
