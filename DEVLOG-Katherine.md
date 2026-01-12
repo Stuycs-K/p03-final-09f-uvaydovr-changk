@@ -22,5 +22,5 @@ Figured out that we need a server, two clients, and sockets in class. Started wo
 (~4 hours in total)
 
 
-### 2026-01-12 |
+### 2026-01-12 | 2:49 PM
 - Fixed game not ending error (had to do with while loop and characters not checking)
