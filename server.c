@@ -21,6 +21,7 @@ void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes
     err(r,"recv");
     if(r==0){
       printf("Connection closed\n");
+      close(p1_socket);
       return;
     }
     s=send(p2_socket,&buff,sizeof(buff),0);
@@ -30,6 +31,7 @@ void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes
     err(r,"recv");
     if(r==0){
       printf("Connection closed\n");
+      close(p2_socket);
       return;
     }
     s=send(p1_socket,&buff,sizeof(buff),0);
@@ -38,14 +40,6 @@ void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes
 }
 
 int main(int argc, char *argv[] ) {
-  //Not forking
-/*
-  int listen_socket = server_setup();
-  int client_socket = server_tcp_handshake(listen_socket);
-  printf("server connected.\n");
-  subserver_logic(client_socket);
-*/
-
  //Forking
   int listen_socket = server_setup();
   printf("Listening on port %s\n\n", PORT);

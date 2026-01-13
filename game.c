@@ -24,7 +24,7 @@ char checkBoard(char board[]){
           return token;
         }
       }
-      
+
       if (r + 3 < ROWS) { // check vertically
         if (board[(r+1) * COLS + c] == ch &&
             board[(r+2) * COLS + c] == ch &&
@@ -110,4 +110,5 @@ int updateBoard(char * board,int col, char token){
 - Select to make sure players can't input moves when it's not their tournament
 - Fix error where if player 2 is run before player 1, the server doesn't break *** (server.c)
 - Server keeping track of all games in tournament
+- Fix error with sighandler message printing twice when closing server
 */

@@ -83,7 +83,9 @@ void playerLogic(int server_socket, int playerTurn){
       sBuff=col;
       int s=send(server_socket,&sBuff,sizeof(sBuff),0);
       err(s,"send error");
-    } else {
+    }
+
+    else {
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
       err(r,"recv error");
