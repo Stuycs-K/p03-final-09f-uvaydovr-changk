@@ -89,7 +89,7 @@ void playerLogic(int server_socket, int playerTurn){
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
       err(r,"recv error");
       if(r==0){
-        printf("Connection closed\n");
+        printf("Player %d has left, closing game\n",oppositePlayer);
         return;
       }
 
