@@ -66,16 +66,23 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Which column do you want to put a piece in?\n");
 
       if (scanf("%d", &col) != 1) {
-        printf("Invalid input. Please enter a valid column number:\n");
+        printf("Error with scanf");
+        return;
       }
 
       while(updateBoard(board, col, token)==-1){ //main.c
         if(col>6||col<0){
           printf("Column %d does not exist. Please enter a valid column number:\n",col);
-        }
-        else{
-          printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
-        }
+          if (scanf("%d", &col) != 1) {
+            printf("Error with scanf");
+            return;
+          }
+        } else {
+          printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);\
+          if (scanf("%d", &col) != 1) {
+            return;
+          }
+      }
 
       }
 

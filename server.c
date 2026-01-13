@@ -3,11 +3,13 @@
 static void sighandler(int signo){
   if(signo==SIGINT){
     printf("\nSIGINT detected, closing server\n");
+    exit(0);
   }
-  exit(0);
+
 }
 
-void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes when game ends and sends info on who won to server
+//subserver does game, closes when game ends and sends info on who won to server
+void subserver_logic(int p1_socket,int p2_socket){
   int buff = 0;
   int r;
   int s;
