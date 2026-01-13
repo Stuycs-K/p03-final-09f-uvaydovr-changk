@@ -20,3 +20,9 @@ Figured out that we need a server, two clients, and sockets in class. Started wo
 - Debugging: Removed int *rBuff and int\*sBuff that was allocated with malloc but then passed sizeof(rBuff) or sizeof(sBuff) to recv/send. sizeof(pointer) isn't sizeof(int). Resulted in weird moves like 'X' appearing in column 0 even though it was never selected. Replaced with int rBuff and int sBuff. Also fixed infinite "column X is already filled" loop caused by repeatedly calling updateBoard. Fixed incorrect winner/loser logic so that the resulting message was correct.
 - Removed extra main and client.c entirely because it was repetitive and didn't work.
 (~4 hours in total)
+
+
+### 2026-01-12 | 2:49 PM
+- Fixed game not ending error (had to do with while loop and characters not checking) (had to recreate test_game.c and run code)
+
+### 2026-01-13

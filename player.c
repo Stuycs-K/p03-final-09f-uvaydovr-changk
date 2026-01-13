@@ -4,8 +4,8 @@
 static void sighandler(int signo){
   if(signo==SIGINT){
     printf("\nSIGINT detected, closing game\n");
+    exit(0);
   }
-  exit(0);
 }
 
 void playerLogic(int server_socket, int playerTurn){
@@ -45,6 +45,8 @@ void playerLogic(int server_socket, int playerTurn){
 
   int currentTurn = 1;
   while(1){
+    int col = 0;
+
     signal(SIGINT,sighandler);
     printBoard(board); //main.c
 
@@ -59,25 +61,22 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Board full. Draw.\n");
       break;
     }
-    int col;
+
     if (currentTurn == playerTurn) {
       printf("Which column do you want to put a piece in?\n");
+
       if (scanf("%d", &col) != 1) {
-        printf("Input error, quitting.\n");
-        return;
+        printf("Invalid input. Please enter a valid column number:\n");
       }
 
-      while(updateBoard(board,col, token)==-1){ //main.c
+      while(updateBoard(board, col, token)==-1){ //main.c
         if(col>6||col<0){
           printf("Column %d does not exist. Please enter a valid column number:\n",col);
         }
         else{
           printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
         }
-        if (scanf("%d", &col) != 1) {
-          printf("Input error, quitting.\n");
-          return;
-        }
+
       }
 
       sBuff=col;
