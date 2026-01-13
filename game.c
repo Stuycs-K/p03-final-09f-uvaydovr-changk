@@ -2,6 +2,7 @@
 
 //checks board to see if game is over
 //returns which token wins
+//returns D if it's a draw
 char checkBoard(char board[]){
   for (int r = 0; r < ROWS; r++) {
     for (int c = 0; c < COLS; c++ ) {
@@ -24,7 +25,7 @@ char checkBoard(char board[]){
           return token;
         }
       }
-      
+
       if (r + 3 < ROWS) { // check vertically
         if (board[(r+1) * COLS + c] == ch &&
             board[(r+2) * COLS + c] == ch &&
@@ -33,7 +34,7 @@ char checkBoard(char board[]){
         }
       }
 
-      if (r + 3 < ROWS && c + 3 < COLS) {
+      if (r + 3 < ROWS && c + 3 < COLS) { //diagonally
         if (board[(r + 1) * COLS + (c + 1)] == ch &&
             board[(r + 2) * COLS + (c + 2)] == ch &&
             board[(r + 3) * COLS + (c + 3)] == ch) {
@@ -41,7 +42,7 @@ char checkBoard(char board[]){
         }
       }
 
-      if (r - 3 >= 0 && c + 3 < COLS) {
+      if (r - 3 >= 0 && c + 3 < COLS) { //diagonally
         if (board[(r - 1) * COLS + (c + 1)] == ch &&
             board[(r - 2) * COLS + (c + 2)] == ch &&
             board[(r - 3) * COLS + (c + 3)] == ch) {
@@ -61,18 +62,14 @@ char checkBoard(char board[]){
   return 'D';
 }
 
-void printBoard(char * board){
-  //prints board in specific format like this:
-  //  _1_|_4_|_7_
-  //  _2_|_5_|_8_
-  //  _3_|_6_|_9_
-  // *Actual board has more rows and columns
-  // *numbering may change
 
+//prints board in specific column format
+void printBoard(char * board){
   printf("\n ");
   for (int c = 0; c < COLS; c++) {
     printf("%d ", c);
   }
+
   printf("\n");
   for(int r = 0; r < ROWS; r++) {
     printf("|");
@@ -87,14 +84,15 @@ void printBoard(char * board){
   printf("\n");
 }
 
-int updateBoard(char * board,int col, char token){
-  //updates board array
-  //returns 0 if board updated
-  //returns -1 if col was already filled
 
+//updates board array
+//returns 0 if board updated
+//returns -1 if col was already filled
+int updateBoard(char * board,int col, char token){
   if (col < 0 || col >= COLS) {
     return -1;
   }
+
   for (int r = ROWS - 1; r >= 0; r--) {
     int i = r * COLS + col;
     if (board[i] == '_' || board[i] == 0) {

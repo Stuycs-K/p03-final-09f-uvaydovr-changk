@@ -38,22 +38,13 @@ void subserver_logic(int p1_socket,int p2_socket){ //subserver does game, closes
 }
 
 int main(int argc, char *argv[] ) {
-  //Not forking
-/*
-  int listen_socket = server_setup();
-  int client_socket = server_tcp_handshake(listen_socket);
-  printf("server connected.\n");
-  subserver_logic(client_socket);
-*/
-
  //Forking
   int listen_socket = server_setup();
   printf("Listening on port %s\n\n", PORT);
 //printf("%d\n",listen_socket);
   while(1){
     signal(SIGINT,sighandler);
-//    int p1_socket;
-//    int p2_socket;
+
     int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket); // ***
     printf("server connected 2 players.\n\n");
