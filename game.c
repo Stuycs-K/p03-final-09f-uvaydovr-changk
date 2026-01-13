@@ -75,26 +75,17 @@ void printBoard(char * board){
   }
   printf("\n");
   for(int r = 0; r < ROWS; r++) {
-    printf("%d", r);
+    printf("|");
     for (int c = 0; c < COLS; c++) {
       int i = r * COLS + c;
       char ch = board[i];
       if(ch ==0) ch = '_';
-      printf("%c ", ch);
+      printf("%c|", ch);
     }
     printf("\n");
   }
   printf("\n");
 }
-
-/*
-
-_1_|_2_|_3_|_4_|_5_|
-___|___|___|___|___|
-___|___|___|___|___|
-___|___|___|___|___|
-
-*/
 
 int updateBoard(char * board,int col, char token){
   //updates board array
@@ -114,18 +105,9 @@ int updateBoard(char * board,int col, char token){
   return -1;
 }
 
-// user input >> 2
-// take the number, looks at the array for that column
-// starts from bottom row and strcmp to see if it's "_" >> then changes value to X/O
-// if it's not, then it goes up the rows
-
-
-/*
-1. we need a server!
-2. forks off a subserver and runs the game logic there
-3. server knows who wins and loses (maybe enter player names at the start?)
-4. two clients (can add more clients later) that are the players
-5. sockets :(
-6. networking lab
-
+/* Things to do:
+- Sighandler to stop a player program if the other player quits, and to stop both players if server quits (and print messages accordingly) (Currently not working as intended)
+- Select to make sure players can't input moves when it's not their tournament
+- Fix error where if player 2 is run before player 1, the server doesn't break *** (server.c)
+- Server keeping track of all games in tournament
 */

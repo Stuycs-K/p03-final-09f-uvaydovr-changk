@@ -1,6 +1,13 @@
 #include "networking.h"
 #include "game.h"
 
+static void sighandler(int signo){
+  if(signo==SIGINT){
+    printf("\nSIGINT detected, closing game\n");
+  }
+  exit(0);
+}
+
 void playerLogic(int server_socket, int playerTurn){
   char token;
   char oppToken;
@@ -21,9 +28,6 @@ void playerLogic(int server_socket, int playerTurn){
       token = 'O';
       oppToken = 'X';
       oppositePlayer = 1;
-  } else {
-    printf("Invalid player number %d.\nPlease input either 1 or 2\n", playerTurn);
-    return;
   }
 
   int rBuff = 0;
@@ -32,10 +36,16 @@ void playerLogic(int server_socket, int playerTurn){
   printf("Connecting to Player %d...\n", oppositePlayer);
   int r = recv(server_socket, &rBuff,sizeof(rBuff),0);
   err(r, "recv");
+  if(r==0){
+    printf("Connection closed\n");
+    return;
+  }
+
   printf("Connected to Player %d!\n\n", oppositePlayer);
 
   int currentTurn = 1;
   while(1){
+    signal(SIGINT,sighandler);
     printBoard(board); //main.c
 
     char result = checkBoard(board);  //function in main.c
@@ -58,7 +68,12 @@ void playerLogic(int server_socket, int playerTurn){
       }
 
       while(updateBoard(board,col, token)==-1){ //main.c
-        printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        if(col>6||col<0){
+          printf("Column %d does not exist. Please enter a valid column number:\n",col);
+        }
+        else{
+          printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);
+        }
         if (scanf("%d", &col) != 1) {
           printf("Input error, quitting.\n");
           return;
@@ -72,6 +87,11 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
       err(r,"recv error");
+      if(r==0){
+        printf("Connection closed\n");
+        return;
+      }
+
       col=rBuff;
       updateBoard(board,col, oppToken);
     }
@@ -93,7 +113,10 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   pNum=(int) strtol(argv[1],NULL,10);
-//printf("%d\n",pNum);
+  if(pNum!=1&&pNum!=2){
+    printf("%d is an invalid player number.\nPlease input either 1 or 2\n", pNum);
+    return -1;
+  }
   int sd = player_tcp_handshake(IP);
 
   if (sd < 0) { printf("connect failed\n"); return 1; }
