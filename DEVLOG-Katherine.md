@@ -23,4 +23,6 @@ Figured out that we need a server, two clients, and sockets in class. Started wo
 
 
 ### 2026-01-12 | 2:49 PM
-- Fixed game not ending error (had to do with while loop and characters not checking)
+- Fixed game not ending error (had to do with while loop and characters not checking) (had to recreate test_game.c and run code)
+
+### 2026-01-13
