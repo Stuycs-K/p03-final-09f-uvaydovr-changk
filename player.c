@@ -55,8 +55,8 @@ void playerLogic(int server_socket, int playerTurn){
     if (currentTurn == playerTurn) {
       printf("Which column do you want to put a piece in?\n");
 
-      if (scanf("%d", &col) != 1) {
-        printf("Error with scanf");
+      if(scanf("%d", &col) != 1) {
+        printf("That it not a number. Make sure to always enter a valid number. Game ending now.\n");
         return;
       }
 
@@ -64,7 +64,7 @@ void playerLogic(int server_socket, int playerTurn){
         if(col>6||col<0){
           printf("Column %d does not exist. Please enter a valid column number:\n",col);
           if (scanf("%d", &col) != 1) {
-            printf("Error with scanf");
+            printf("That it not a number. Make sure to always enter a valid number. Game ending now.\n");
             return;
           }
         } else {
@@ -85,7 +85,7 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
       if(r==0){
-        printf("Player %d has left, closing game\n",oppositePlayer);
+        printf("Connection with Player %d has ended, closing game\n",oppositePlayer);
         return;
       }
       err(r,"recv error");

@@ -104,9 +104,6 @@ int updateBoard(char * board,int col, char token){
 }
 
 /* Things to do:
-- Sighandler to stop a player program if the other player quits, and to stop both players if server quits (and print messages accordingly) (Currently not working as intended)
 - Select to make sure players can't input moves when it's not their tournament
-- Fix error where if player 2 is run before player 1, the server doesn't break *** (server.c)
 - Server keeping track of all games in tournament
-- Fix error with sighandler message printing twice when closing server
 */

@@ -20,6 +20,5 @@ void err(int i, char*message);
 int server_setup();
 int player_tcp_handshake(char*server_address);
 int server_tcp_handshake(int listen_socket);
-//static void sighandler(int signo);
 
 #endif
