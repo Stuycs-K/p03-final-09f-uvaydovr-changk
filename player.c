@@ -33,10 +33,11 @@ void playerLogic(int server_socket, int playerTurn){
   int rBuff = 0;
   int sBuff = 0;
   int currentTurn = 1;
+
+  signal(SIGINT,sighandler);
+
   while(1){
     int col = 0;
-
-    signal(SIGINT,sighandler);
     printBoard(board); //main.c
 
     char result = checkBoard(board);  //function in main.c
@@ -83,11 +84,11 @@ void playerLogic(int server_socket, int playerTurn){
     else {
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
-      err(r,"recv error");
       if(r==0){
-        printf("Connection closed\n");
+        printf("Connection closed. Other player or server quit.\n");
         return;
       }
+      err(r,"recv error");
 
       col=rBuff;
       updateBoard(board,col, oppToken);

@@ -26,7 +26,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p1_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf("Connection closed\n");
+      printf("Connection closed. Other player or server quit.\n");
       close(p1_socket);
       return;
     }
@@ -36,7 +36,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p2_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf("Connection closed\n");
+      printf("Connection closed. Other player or server quit.\n");
       close(p2_socket);
       return;
     }
@@ -49,10 +49,9 @@ int main(int argc, char *argv[] ) {
  //Forking
   int listen_socket = server_setup();
   printf("Listening on port %s\n\n", PORT);
-//printf("%d\n",listen_socket);
-  while(1){
-    signal(SIGINT,sighandler);
+  signal(SIGINT, sighandler);
 
+  while(1){
     int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket); // ***
     printf("server connected 2 players.\n\n");
@@ -69,6 +68,7 @@ int main(int argc, char *argv[] ) {
       subserver_logic(p1_socket, p2_socket);
       close(p1_socket);
       close(p2_socket);
+      exit(0);
     }
     else{ //parent server
       close(p1_socket);
