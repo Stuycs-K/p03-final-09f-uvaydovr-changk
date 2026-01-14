@@ -13,8 +13,12 @@ void subserver_logic(int p1_socket,int p2_socket){
   int buff = 0;
   int r;
   int s;
+
+  buff = 1;
   s=send(p1_socket,&buff,sizeof(buff),0);
   err(s,"send");
+
+  buff = 2;
   s=send(p2_socket,&buff,sizeof(buff),0);
   err(s,"send");
 

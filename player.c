@@ -32,17 +32,6 @@ void playerLogic(int server_socket, int playerTurn){
 
   int rBuff = 0;
   int sBuff = 0;
-
-  printf("Connecting to Player %d...\n", oppositePlayer);
-  int r = recv(server_socket, &rBuff,sizeof(rBuff),0);
-  err(r, "recv");
-  if(r==0){
-    printf("Connection closed\n");
-    return;
-  }
-
-  printf("Connected to Player %d!\n\n", oppositePlayer);
-
   int currentTurn = 1;
   while(1){
     int col = 0;
@@ -114,23 +103,22 @@ void playerLogic(int server_socket, int playerTurn){
 
 int main(int argc, char *argv[]) {
   char *IP = "127.0.0.1";
-  int pNum=0;
-  if(argc==1){
-    printf("Add argument '1' to be Player 1\n");
-    printf("Add argument '2' to be Player 2\n");
-    return -1;
-  }
-  pNum=(int) strtol(argv[1],NULL,10);
-  if(pNum!=1&&pNum!=2){
-    printf("%d is an invalid player number.\nPlease input either 1 or 2\n", pNum);
-    return -1;
-  }
+  signal(SIGINT, sighandler);
   int sd = player_tcp_handshake(IP);
-
   if (sd < 0) { printf("connect failed\n"); return 1; }
   printf("Connected to server\n\n");
 
-  playerLogic(sd,pNum);
+  int playerTurn = 0;
+  int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
+  int playerTurn = 0;
+  int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
+  if (r <= 0) {
+    printf("Server closed before assigning player number\n");
+    close(sd);
+    return 1;
+  }
+  printf("You are Player %d \n", playerTurn);
+  playerLogic(sd,playerTurn);
 
   close(sd);
 
