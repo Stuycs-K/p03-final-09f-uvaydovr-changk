@@ -54,14 +54,14 @@ int main(int argc, char *argv[] ) {
   while(1){
     int p1_socket = server_tcp_handshake(listen_socket); //figure out how to determine which is p1 and p2, right now it's just whoever goes first
     int p2_socket = server_tcp_handshake(listen_socket); // ***
-    printf("server connected 2 players.\n\n");
+    printf("Server connected 2 players.\n\n");
 
     int f=fork();
     if(f<0){
       printf("%s\n",strerror(errno));
       close(p1_socket);
       close(p2_socket);
-      exit(1);
+      exit(0);
     }
     if(f==0){ //subserver
       close(listen_socket);

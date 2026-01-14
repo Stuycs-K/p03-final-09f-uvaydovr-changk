@@ -18,6 +18,12 @@ void playerLogic(int server_socket, int playerTurn){
     board[i] = '_';
   }
 
+  char name[100];
+  printf("Please enter your name: ");
+  scanf("%s", name);
+  int s=send(server_socket,&name,sizeof(name),0);
+
+
   if (playerTurn == 1) {
       printf("Your token is X\n\n");
       token = 'X';
@@ -56,11 +62,12 @@ void playerLogic(int server_socket, int playerTurn){
       printf("Which column do you want to put a piece in?\n");
 
       if (scanf("%d", &col) != 1) {
-        printf("Error with scanf");
+        printf("Not a valid number. Please enter a valid column number: \n");
         return;
       }
 
       while(updateBoard(board, col, token)==-1){ //main.c
+
         if(col>6||col<0){
           printf("Column %d does not exist. Please enter a valid column number:\n",col);
           if (scanf("%d", &col) != 1) {
