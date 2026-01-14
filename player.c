@@ -111,8 +111,7 @@ int main(int argc, char *argv[]) {
 
   int playerTurn = 0;
   int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
-  int playerTurn = 0;
-  int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
+
   if (r <= 0) {
     printf("Server closed before assigning player number\n");
     close(sd);
