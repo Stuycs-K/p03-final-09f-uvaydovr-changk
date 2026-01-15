@@ -1,6 +1,7 @@
 #include "networking.h"
 #include "game.h"
 
+
 static void sighandler(int signo){
   if(signo==SIGINT){
     printf("\nSIGINT detected, closing game\n");
@@ -24,10 +25,10 @@ void playerLogic(int server_socket, int playerTurn){
   printf("Please enter your name: ");
   scanf("%s", name);
   
-  int s=send(server_socket,&name,sizeof(name),0);
+  int s=send(server_socket, name,sizeof(name),0);
   err(s, "send name");
   
-  int r = recv(server_socket, oppName, sizeof(name), 0);
+  int r = recv(server_socket, oppName, sizeof(oppName), 0);
   err(r, "recv name");
   
   printf("Your opponent is %s. \n", oppName);
@@ -58,6 +59,11 @@ void playerLogic(int server_socket, int playerTurn){
     char result = checkBoard(board);  //function in main.c
     if (result == token) {
       printf("You win!\n");
+      
+      int winSig = -1;
+      int s2 = send(server_socket, &winSig, sizeof(winSig), 0);
+      err(s2, "send winner signal");
+     
       break;
     } else if (result == oppToken) {
       printf("%s (Player %d) wins!\n", oppName, oppositePlayer);

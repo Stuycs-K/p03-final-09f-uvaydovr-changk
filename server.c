@@ -45,7 +45,30 @@ void subserver_logic(int p1_socket,int p2_socket){
       close(p1_socket);
       return;
     }
+
+    if(buff == -1) {
+        int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
+        if(fd!=-1){
+            int len = 0;
+            while (name1[len] != '\0') {
+                len++;
+            }
+            write(fd, name1, len);
+            write(fd, "\n", 1);
+            close(fd);
+       
+            printf("Recorded win for %s in leaderboard \n", name1);
+             
+        }
+           
+        close(p1_socket);
+        close(p2_socket);
+        return;
+    }
+
+    
     s=send(p2_socket,&buff,sizeof(buff),0);
+    
     err(s,"send");
 
     r=recv(p2_socket,&buff,sizeof(buff),0);
@@ -55,6 +78,25 @@ void subserver_logic(int p1_socket,int p2_socket){
       close(p2_socket);
       return;
     }
+
+    if(buff == -1) {
+        int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
+        if (fd != -1) {
+        	int len = 0;
+            while (name2[len] != '\0') {
+            	len++;
+            }
+            write(fd, name2, len);
+            write(fd, "\n", 1);
+            close(fd);
+            printf("Recorded win for %s in leaderboard\n", name2);
+        }
+
+        close(p1_socket);
+        close(p2_socket);
+        return;
+    }
+
     s=send(p1_socket,&buff,sizeof(buff),0);
     err(s,"send");
   }
