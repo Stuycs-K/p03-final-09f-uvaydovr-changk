@@ -45,14 +45,12 @@ void playerLogic(int server_socket, int playerTurn){
   fd_set read_fds;
 
   while(1){
-
-
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
-//    FD_SET(server_socket,&read_fds);
-//    int sel = select(server_socket+1, &read_fds, NULL, NULL, NULL);
-    int sel = select(STDIN_FILENO+1, &read_fds, NULL, NULL, NULL);
-
+    FD_SET(server_socket,&read_fds);
+    int sel = select(server_socket+1, &read_fds, NULL, NULL, NULL);
+//    int sel = select(STDIN_FILENO+1, &read_fds, NULL, NULL, NULL);
+    err(sel,"select");
 
     int col = 0;
 
@@ -80,24 +78,31 @@ void playerLogic(int server_socket, int playerTurn){
 //      }
 
       while(updateBoard(board, col, token)==-1){
-
-
-  //    if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
-
         if(col>6||col<0){
           printf("Column %d does not exist. Please enter a valid column number:\n",col);
+
+          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
+
           if (scanf("%d", &col) != 1) {
             printf("That it not a number. Make sure to always enter a valid number. Game ending now.\n");
             return;
           }
+
+          } // ***
+
         }
         else {
           printf("Column %d is already filled. Please enter a column with space for a new piece:\n",col);\
+
+          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
+
           if (scanf("%d", &col) != 1) {
             return;
           }
+
+          } // ***
+
         }
-  //    }  // ***
 
       }
       sBuff=col;
