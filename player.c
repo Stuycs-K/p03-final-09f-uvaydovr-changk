@@ -70,12 +70,12 @@ void playerLogic(int server_socket, int playerTurn){
       printBoard(board);
       printf("Which column do you want to put a piece in?\n");
 
-//      if (FD_ISSET(STDIN_FILENO, &read_fds)) {
+      if (FD_ISSET(STDIN_FILENO, &read_fds)) {
         if(scanf("%d", &col) != 1) {
           printf("That it not a number. Make sure to always enter a valid number. Game ending now.\n");
           return;
         }
-//      }
+      }
 
       while(updateBoard(board, col, token)==-1){
         if(col>6||col<0){
@@ -112,13 +112,15 @@ void playerLogic(int server_socket, int playerTurn){
 
     else {
       printf("Player %d is taking their turn...\n\n", oppositePlayer);
+  if (FD_ISSET(server_socket, &read_fds)) {  // **
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
+      printf("received %d bytes",r);
       if(r==0){
         printf("Connection with Player %d has ended, closing game\n",oppositePlayer);
         return;
       }
       err(r,"recv error");
-
+  } // **
       col=rBuff;
       updateBoard(board,col, oppToken);
     }
