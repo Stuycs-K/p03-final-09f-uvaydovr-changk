@@ -27,3 +27,7 @@ Figured out that we need a server, two clients, and sockets in class. Started wo
 
 ### 2026-01-14 | 3:09 AM (for 01-13)
 Generally cleaning up the code and unused snippets and comments. Debugging connection errors, such as the infinite "invalid column" error. At home, redid it so that whoever connected to the game first is player 1. Also adjusted sighandler to stop having repetitive calls. 
+
+### 2026-01-15 | 2:29 AM (for 01-14)
+Worked on debugging networking issues and removing duplicate code in class.
+At home, implemented leaderboard and naming system. 
