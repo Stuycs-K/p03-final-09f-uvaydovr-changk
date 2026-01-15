@@ -21,22 +21,22 @@ void subserver_logic(int p1_socket,int p2_socket){
   buff = 2;
   s=send(p2_socket,&buff,sizeof(buff),0);
   err(s,"send");
-  
+
   char name1[100];
   char name2[100];
-  
+
   r = recv(p1_socket, name1, sizeof(name1), 0);
   err(r, "recv name1");
-  
+
   r = recv(p2_socket, name2, sizeof(name2), 0);
   err(r, "recv name2");
-  
+
   s = send(p1_socket, name2, sizeof(name2), 0);
   err(s, "send opp name to p1");
-  
+
   s = send(p2_socket, name1, sizeof(name1), 0);
   err(s, "send opp name to p2");
-      
+
   while(1){
     r=recv(p1_socket,&buff,sizeof(buff),0);
     err(r,"recv");
@@ -46,29 +46,8 @@ void subserver_logic(int p1_socket,int p2_socket){
       return;
     }
 
-    if(buff == -1) {
-        int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
-        if(fd!=-1){
-            int len = 0;
-            while (name1[len] != '\0') {
-                len++;
-            }
-            write(fd, name1, len);
-            write(fd, "\n", 1);
-            close(fd);
-       
-            printf("Recorded win for %s in leaderboard \n", name1);
-             
-        }
-           
-        close(p1_socket);
-        close(p2_socket);
-        return;
-    }
-
-    
     s=send(p2_socket,&buff,sizeof(buff),0);
-    
+
     err(s,"send");
 
     r=recv(p2_socket,&buff,sizeof(buff),0);
@@ -79,8 +58,9 @@ void subserver_logic(int p1_socket,int p2_socket){
       return;
     }
 
+/*
     if(buff == -1) {
-        int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
+        int fd = open("leaderboard.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (fd == -1) {
             perror("open leaderboard.txt");
         } else {
@@ -99,9 +79,32 @@ void subserver_logic(int p1_socket,int p2_socket){
         return;
     }
 
+*/
     s=send(p1_socket,&buff,sizeof(buff),0);
     err(s,"send");
   }
+}
+
+void leaderboard(){
+  FILE *fp = fopen("leaderboard.txt", "r");
+  int count[256] = { 0 };
+  char c;
+
+  while((c=fgetc(fp))) {
+    if(c == EOF) break;
+    count[c]+=1;
+  }
+
+  for(k = 0; k < 256; k++) {
+    if(count[k] > 0) {
+      printf("char %c; %d times \n", k, count[k]);
+    }
+  }
+
+  fclose(fp);
+  return 0;
+
+
 }
 
 int main(int argc, char *argv[] ) {
