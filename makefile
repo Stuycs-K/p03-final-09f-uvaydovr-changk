@@ -5,7 +5,7 @@ compile: player.o server.o networking.o game.o test_game.o
 	@gcc -o server server.o networking.o
 
 player:
-	@./player $(ARGS)
+	@./player
 
 player.o: player.c networking.h game.h
 	@gcc -c -Wall player.c

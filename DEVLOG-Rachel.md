@@ -24,3 +24,6 @@ I merged main with my partner's new code to my branch in order to test out her c
 
 ### 2026-01-12 - Updated printBoard+added to-do list, Sighandler+recv()==0
 The board that printBoard prints was updated to look cleaner, with the row numbers removed because those are uneecessary (20 minutes), changed comments at the end of game.c to add a new list of things we need to do (10 minutes). AT HOME: Created sighandler function to detect SIGINT and tried implementing it, but it doesn't exactly work as intended, also add statements to exit the game when recv() returns 0 but also not working as intended, need to make sure that both players quit, because right now only one quits and the other is stuck in an infinite loop (1 hour).
+
+### 2026-01-13 - Trying to fix error with players not closing at same time+New plan to fix player 1 and player 2 getting assigned incorrectly
+Tried to figure out why only one player closed when server closed, we asked Mr. K what to do about assigning p1 and p2 in server and he suggested to just not ask the player for args and instead assign them based on who runs player first, so I will implement that in the future (30 minutes).
