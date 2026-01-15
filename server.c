@@ -81,8 +81,10 @@ void subserver_logic(int p1_socket,int p2_socket){
 
     if(buff == -1) {
         int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
-        if (fd != -1) {
-        	int len = 0;
+        if (fd == -1) {
+            perror("open leaderboard.txt");
+        } else {
+            int len = 0;
             while (name2[len] != '\0') {
             	len++;
             }
