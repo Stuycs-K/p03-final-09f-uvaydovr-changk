@@ -24,4 +24,4 @@ networking.o: networking.c networking.h
 
 clean:
 	rm -f *.o *~
-	rm -f player server game_test leaderboard.txt
+	rm -f player server leaderboard.txt
