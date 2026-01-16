@@ -7,7 +7,7 @@ static int game_id = 0;
 
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf("\nSIGINT detected, closing server\n");
+    printf("\n" COLOR_MAGENTA "[SERVER] SIGINT detected, shutting down.\n" COLOR_RESET);
     exit(0);
   }
 
@@ -16,7 +16,7 @@ static void sighandler(int signo){
 void leaderboard() {
     FILE *fp = fopen("leaderboard.txt", "r");
     if (!fp) {
-        printf("[leaderboard] No leaderboard yet! Play some games first. \n");
+        printf(COLOR_MAGENTA "[SERVER] No leaderboard yet. Play some games first.\n" COLOR_RESET);
         return;
     }
 
@@ -70,7 +70,7 @@ void leaderboard() {
 
 	fclose(fp);
 
-	printf("\n=== TOURNAMENT LEADERBOARD === \n");
+	printf("\n" COLOR_BOLD "=== TOURNAMENT LEADERBOARD ===" COLOR_RESET "\n");
 	if (count == 0) {
 		printf("(no wins recorded yet) \n\n");
 		return;
@@ -108,7 +108,9 @@ void subserver_logic(int p1_socket,int p2_socket){
 
   r = recv(p2_socket, name2, sizeof(name2), 0);
   err(r, "recv name2");
-
+  
+  printf(COLOR_CYAN "[SERVER] Game players: '%s' vs '%s'\n" COLOR_RESET, name1, name2);
+  
   s = send(p1_socket, name2, sizeof(name2), 0);
   err(s, "send opp name to p1");
 
@@ -118,7 +120,7 @@ void subserver_logic(int p1_socket,int p2_socket){
   while(1){
     r=recv(p1_socket,&buff,sizeof(buff),0);
     if(r <= 0){
-      printf("Connection closed. Other player or server quit.\n");
+      printf(COLOR_MAGENTA "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
       close(p1_socket);
       return;
     }
@@ -135,7 +137,7 @@ void subserver_logic(int p1_socket,int p2_socket){
             write(fd, "\n", 1);
             close(fd);
     
-            printf("[Game finished] Winner: %s \n", name2);
+            printf(COLOR_GREEN "[SERVER] Game finished. Winner: %s\n" COLOR_RESET, name2);
             leaderboard();
         }
     
@@ -153,7 +155,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p2_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf("Connection closed. Other player or server quit.\n");
+      printf(COLOR_MAGENTA "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
       close(p2_socket);
       return;
     }
@@ -170,7 +172,7 @@ void subserver_logic(int p1_socket,int p2_socket){
             write(fd, "\n", 1);
             close(fd);
             
-            printf("[Game finished] Winner: %s \n", name1);
+            printf(COLOR_GREEN "[SERVER] Game finished. Winner: %s\n" COLOR_RESET, name1);
             leaderboard();
         }
 
@@ -189,16 +191,17 @@ void subserver_logic(int p1_socket,int p2_socket){
 int main(int argc, char *argv[] ) {
  //Forking
   int listen_socket = server_setup();
-  printf("Listening on port %s\n\n", PORT);
+  printf(COLOR_BOLD "[SERVER] Listening on port %s\n\n" COLOR_RESET, PORT);
   signal(SIGINT, sighandler);
 
   while(1){
+    printf("[SERVER] Waiting for two players to connect...\n");
     int p1_socket = server_tcp_handshake(listen_socket);
     int p2_socket = server_tcp_handshake(listen_socket);
-    printf("Server connected 2 players.\n\n");
+    printf(COLOR_GREEN "[SERVER] Two players connected. Starting game setup.\n\n" COLOR_RESET);
 
     game_id = game_id + 1;
-    printf("Starting game %d: waiting for winner...\n\n", game_id);
+    printf(COLOR_BOLD "[SERVER] Starting game %d: waiting for winner...\n\n", game_id);
     
     int f=fork();
     if(f<0){

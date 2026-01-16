@@ -4,7 +4,7 @@
 
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf("\nSIGINT detected, closing game\n");
+    printf("\n" COLOR_MAGENTA "[CLIENT] SIGINT detected, closing game." COLOR_RESET "\n");
     exit(0);
   }
 }
@@ -22,7 +22,7 @@ void playerLogic(int server_socket, int playerTurn){
   char name[100];
   char oppName[100];
 
-  printf("Please enter your name: ");
+  printf(COLOR_BOLD "Enter your player name: " COLOR_RESET);
   scanf("%s", name);
 
   int s=send(server_socket, name,sizeof(name),0);
@@ -31,7 +31,7 @@ void playerLogic(int server_socket, int playerTurn){
   int r = recv(server_socket, oppName, sizeof(oppName), 0);
   err(r, "recv name");
 
-  printf("Your opponent is %s. \n", oppName);
+  printf(COLOR_BOLD "Your opponent is %s. \n" COLOR_RESET, oppName);
 
 
   if (playerTurn == 1) {
