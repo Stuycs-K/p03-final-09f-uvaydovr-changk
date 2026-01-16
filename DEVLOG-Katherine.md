@@ -32,5 +32,8 @@ Generally cleaning up the code and unused snippets and comments. Debugging conne
 Worked on debugging networking issues and removing duplicate code in class.
 At home, implemented leaderboard and naming system.
 
-### 2026-01-15 | 2:48 PM  
-Debugged naming system and trying to implement leaderboard by reading a file. 
+
+### 2026-01-15 | 10:03 PM  
+At school: Debugged naming system and trying to implement leaderboard by reading a file. 
+At home: Fixed leaderboard not printing error. Caused by server never receiving buff == -1 so I moved winner signal to the losing side so server isn't blocked and waiting for recv(p2_socket).
+Also changed hard coded PORT to variable. 
