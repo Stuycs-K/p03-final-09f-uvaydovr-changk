@@ -62,7 +62,7 @@ void playerLogic(int server_socket, int playerTurn){
       break;
     } else if (result == oppToken) {
       printf(COLOR_RED "%s (Player %d) wins!\n" COLOR_RESET, oppName, oppositePlayer);
-      
+
       int winSig = -1;
       int s2 = send(server_socket, &winSig, sizeof(winSig), 0);
       err(s2, "send winner signal:");
@@ -76,7 +76,7 @@ void playerLogic(int server_socket, int playerTurn){
       printf("%s, choose a column (0-%d) to drop your piece: ", name, COLS - 1);
 
       if(scanf("%d", &col) != 1) {
-       printf(COLOR_RED "[PLAYER] That is not a number. Please restart and enter valid input.\n" COLOR_RESET);
+        printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
         return;
       }
 
@@ -85,12 +85,13 @@ void playerLogic(int server_socket, int playerTurn){
         if(col>6||col<0){
          printf(COLOR_RED "[PLAYER] Column %d does not exist." COLOR_RESET "Enter a valid column number (0-%d):\n", col, COLS - 1);;
           if (scanf("%d", &col) != 1) {
-            printf(COLOR_RED "[PLAYER] That it not a number. Make sure to always enter a valid number. Game ending now.\n" COLOR_RESET);
+            printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
             return;
           }
         } else {
-          printf(COLOR_RED "[CLIENT] Column %d is full." COLOR_RESET "Choose a different column: .n", col);
+          printf(COLOR_RED "[PLAYER] Column %d is full." COLOR_RESET "Choose a different column: .n", col);
           if (scanf("%d", &col) != 1) {
+            printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
             return;
           }
       }
@@ -134,11 +135,11 @@ int main(int argc, char *argv[]) {
   int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
 
   if (r <= 0) {
-    printf(COLOR_RED "[CLIENT] Server closed before assigning player number.\n" COLOR_RESET);
+    printf(COLOR_RED "[PLAYER] Server closed before assigning player number.\n" COLOR_RESET);
     close(sd);
     return 1;
   }
-  
+
   playerLogic(sd,playerTurn);
 
   close(sd);
