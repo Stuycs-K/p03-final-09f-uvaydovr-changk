@@ -16,14 +16,13 @@ When a game ends, the server records the winner's name in a leaderboard. Multipl
 From the project directory: 
 ```
 make compile	# build server and player
-make run 		# starts the server (Terminal 1)
+make server 	# starts the server (Terminal 1)
 
 ```
 
 Then, in two other terminals on the same machine:
 ```
-./player          # Player 1 (Terminal 2)
-./player          # Player 2 (Terminal 3)
+make player       
 ```
 
 You can end the game with ```Ctrl+C``` - this will end all active games if run in the server, and it will quit the current game if in player.
