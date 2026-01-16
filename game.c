@@ -102,8 +102,3 @@ int updateBoard(char * board,int col, char token){
   }
   return -1;
 }
-
-/* Things to do:
-- Select to make sure players can't input moves when it's not their tournament
-- Server keeping track of all games in tournament
-*/

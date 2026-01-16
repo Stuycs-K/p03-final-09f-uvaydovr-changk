@@ -3,6 +3,8 @@
 #define MAX_PLAYERS 100
 #define NAME_LEN 100
 
+static int game_id = 0;
+
 static void sighandler(int signo){
   if(signo==SIGINT){
     printf("\nSIGINT detected, closing server\n");
@@ -12,7 +14,6 @@ static void sighandler(int signo){
 }
 
 void leaderboard() {
-    printf("[debug] leaderboard() called\n");
     FILE *fp = fopen("leaderboard.txt", "r");
     if (!fp) {
         printf("[leaderboard] No leaderboard yet! Play some games first. \n");
@@ -77,7 +78,7 @@ void leaderboard() {
 
 	int idx = 0;
 	while(idx < count) {
-		printf("%d %s %d wins \n", idx + 1, names[idx], wins[idx]);
+		printf("%2d. %-20s  %d wins\n", idx + 1, names[idx], wins[idx]);
 		idx++;
 	}
 
@@ -134,7 +135,7 @@ void subserver_logic(int p1_socket,int p2_socket){
             write(fd, "\n", 1);
             close(fd);
     
-            printf("Recorded win for %s in leaderboard\n", name2);
+            printf("[Game finished] Winner: %s \n", name2);
             leaderboard();
         }
     
@@ -169,7 +170,7 @@ void subserver_logic(int p1_socket,int p2_socket){
             write(fd, "\n", 1);
             close(fd);
             
-            printf("Recorded win for %s in leaderboard\n", name1);
+            printf("[Game finished] Winner: %s \n", name1);
             leaderboard();
         }
 
@@ -181,6 +182,8 @@ void subserver_logic(int p1_socket,int p2_socket){
     s=send(p1_socket,&buff,sizeof(buff),0);
     err(s,"send");
   }
+
+  
 }
 
 int main(int argc, char *argv[] ) {
@@ -192,8 +195,11 @@ int main(int argc, char *argv[] ) {
   while(1){
     int p1_socket = server_tcp_handshake(listen_socket);
     int p2_socket = server_tcp_handshake(listen_socket);
-    printf("server connected 2 players.\n\n");
+    printf("Server connected 2 players.\n\n");
 
+    game_id = game_id + 1;
+    printf("Starting game %d: waiting for winner...\n\n", game_id);
+    
     int f=fork();
     if(f<0){
       printf("%s\n",strerror(errno));
