@@ -55,14 +55,12 @@ void playerLogic(int server_socket, int playerTurn){
   fd_set read_fds;
 
   while(1){
-/*
+    printBoard(board);
+
     FD_ZERO(&read_fds);
     FD_SET(STDIN_FILENO, &read_fds);
     FD_SET(server_socket,&read_fds);
-    int sel = select(server_socket+1, &read_fds, NULL, NULL, NULL);
-//    int sel = select(STDIN_FILENO+1, &read_fds, NULL, NULL, NULL);
-    err(sel,"select");
-*/
+
     int col = 0;
 
     char result = checkBoard(board);
@@ -82,39 +80,45 @@ void playerLogic(int server_socket, int playerTurn){
     }
 
     if (currentTurn == playerTurn) {
-      printf("%s, choose a column (0-%d) to drop your piece: ", name, COLS - 1);
+      printf("%s, choose a column (0-%d) to drop your piece:\n", name, COLS - 1);
 
-//      if (FD_ISSET(STDIN_FILENO, &read_fds)) { // *
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket,&read_fds);
+
+    int sel = select(server_socket+1, &read_fds, NULL, NULL, NULL);
+    err(sel,"select");
+
+      if (FD_ISSET(STDIN_FILENO, &read_fds)) { // *
       if(scanf("%d", &col) != 1) {
        printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
         return;
       }
-//      } // *
+      } // *
 
       while(updateBoard(board, col, token)==-1){
         if(col>6||col<0){
          printf(COLOR_RED "[PLAYER] Column %d does not exist." COLOR_RESET "Enter a valid column number (0-%d):\n", col, COLS - 1);;
 
-//          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
+          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
           if (scanf("%d", &col) != 1) {
             printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
             return;
           }
-//          } // ***
+          } // ***
         }
 
 
         else{
+          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
 
-//          if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
-
-          printf(COLOR_RED "[CLIENT] Column %d is full." COLOR_RESET "Choose a different column: .n", col);
+          printf(COLOR_RED "[CLIENT] Column %d is full." COLOR_RESET "Choose a different column:\n", col);
           if (scanf("%d", &col) != 1) {
             printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
             return;
           }
 
-//          } // ***
+          } // ***
 
         }
 
@@ -126,18 +130,22 @@ void playerLogic(int server_socket, int playerTurn){
 
     else {
       printf("[PLAYER] %s (Player %d) is taking their turn...\n\n", oppName, oppositePlayer);
-//  if (FD_ISSET(server_socket, &read_fds)) {  // **
+
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket,&read_fds);
+
+    int sel = select(server_socket+1, &read_fds, NULL, NULL, NULL);
+    err(sel,"select");
+
+  if (FD_ISSET(server_socket, &read_fds)) {  // **
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
-
-      printf("received %d bytes:",r);
-      printf("%d\n",rBuff);
-
       if(r==0){
         printf(COLOR_RED "[PLAYER] Connection with %s (Player %d) has ended, closing game\n" COLOR_RESET,oppName, oppositePlayer);
         return;
       }
       err(r,"recv error");
-//  } // **
+  } // **
       col=rBuff;
       updateBoard(board,col, oppToken);
     }
