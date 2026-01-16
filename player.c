@@ -1,9 +1,10 @@
 #include "networking.h"
 #include "game.h"
 
+
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf("\nSIGINT detected, closing game\n");
+    printf(COLOR_RED "[CLIENT] SIGINT detected, closing game." COLOR_RESET "\n");
     exit(0);
   }
 }
@@ -19,12 +20,19 @@ void playerLogic(int server_socket, int playerTurn){
   }
 
   char name[100];
-  printf("Please enter your name: ");
+  char oppName[100];
+
+  printf(COLOR_BOLD "Enter your player name: " COLOR_RESET);
   scanf("%s", name);
-  int s=send(server_socket,&name,sizeof(name),0);
-  if(s==-1){
-    printf("Server closed, ending game.\n");
-  }
+
+  int s=send(server_socket, name,sizeof(name),0);
+  err(s, "send name");
+
+  int r = recv(server_socket, oppName, sizeof(oppName), 0);
+  err(r, "recv name");
+
+  printf(COLOR_BOLD "Your opponent is %s. \n" COLOR_RESET, oppName);
+
 
   if (playerTurn == 1) {
       printf("Your token is X\n\n");
@@ -59,10 +67,14 @@ void playerLogic(int server_socket, int playerTurn){
 
     char result = checkBoard(board);
     if (result == token) {
-      printf("You win!\n");
+      printf("You win!\n");;
       break;
     } else if (result == oppToken) {
-      printf("Player %d wins!\n", oppositePlayer);
+      printf("%s (Player %d) wins!\n", oppName, oppositePlayer);
+
+      int winSig = -1;
+      int s2 = send(server_socket, &winSig, sizeof(winSig), 0);
+      err(s2, "send winner signal:");
       break;
     } else if (result == 'D') {
       printf("Board full. Draw.\n");
@@ -70,8 +82,7 @@ void playerLogic(int server_socket, int playerTurn){
     }
 
     if (currentTurn == playerTurn) {
-      printBoard(board);
-      printf("Which column do you want to put a piece in?\n");
+      printf("%s, which column do you want to put a piece in?\n", name );
 
 //      if (FD_ISSET(STDIN_FILENO, &read_fds)) { // *
         if(scanf("%d", &col) != 1) {
@@ -114,7 +125,8 @@ void playerLogic(int server_socket, int playerTurn){
     }
 
     else {
-      printf("Player %d is taking their turn...\n\n", oppositePlayer);
+      printf("%s (Player %d) is taking their turn...\n\n", oppName, oppositePlayer);
+
 //  if (FD_ISSET(server_socket, &read_fds)) {  // **
       int r=recv(server_socket, &rBuff,sizeof(rBuff),0);
 
@@ -122,7 +134,7 @@ void playerLogic(int server_socket, int playerTurn){
       printf("%d\n",rBuff);
 
       if(r==0){
-        printf("Connection with Player %d has ended, closing game\n",oppositePlayer);
+        printf("Connection with %s (Player %d) has ended, closing game\n",oppName, oppositePlayer);
         return;
       }
       err(r,"recv error");

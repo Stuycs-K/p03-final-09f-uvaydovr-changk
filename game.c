@@ -67,7 +67,7 @@ char checkBoard(char board[]){
 void printBoard(char * board){
   printf("\n ");
   for (int c = 0; c < COLS; c++) {
-    printf("%d ", c);
+    printf(COLOR_CYAN COLOR_BOLD "%d " COLOR_RESET, c);
   }
 
   printf("\n");
@@ -102,8 +102,3 @@ int updateBoard(char * board,int col, char token){
   }
   return -1;
 }
-
-/* Things to do:
-- Select to make sure players can't input moves when it's not their tournament
-- Server keeping track of all games in tournament
-*/
