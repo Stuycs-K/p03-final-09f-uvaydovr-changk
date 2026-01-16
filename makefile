@@ -1,4 +1,4 @@
-.PHONY: player server compile clean
+.PHONY: player server compile clean run
 
 compile: player.o server.o networking.o game.o
 	@gcc -o player player.o networking.o game.o

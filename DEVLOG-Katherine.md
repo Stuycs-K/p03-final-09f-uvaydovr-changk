@@ -30,10 +30,14 @@ Generally cleaning up the code and unused snippets and comments. Debugging conne
 
 ### 2026-01-15 | 2:29 AM (for 01-14)
 Worked on debugging networking issues and removing duplicate code in class.
-At home, implemented leaderboard and naming system.
+At home, started to implement leaderboard and naming system with files.
 
 
-### 2026-01-15 | 10:03 PM  
+### 2026-01-15 | 2:49 pm |  10:03 PM  | 11:17 PM
 At school: Debugged naming system and trying to implement leaderboard by reading a file. 
-At home: Fixed leaderboard not printing error. Caused by server never receiving buff == -1 so I moved winner signal to the losing side so server isn't blocked and waiting for recv(p2_socket).
-Also changed hard coded PORT to variable. 
+At home: Fixed leaderboard not printing after wins. Caused by server never receiving buff == -1 so I moved winner signal to the losing side so server isn't blocked and waiting for recv(p2_socket).
+- Debugged "connection refused" error and changed Also changed it from a hard coded PORT ot the variable
+- Tested the entire game: two players can connect, play, winner's name is appended to 'leaderboard.txt' and prints updated leaderboard
+- also added colors to print statements and cleaned up print statements
+- changed the Makefile to have a run target instead of ./server
+
