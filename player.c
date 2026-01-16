@@ -91,14 +91,14 @@ void playerLogic(int server_socket, int playerTurn){
 
       if (FD_ISSET(STDIN_FILENO, &read_fds)) { // *
       if(scanf("%d", &col) != 1) {
-       printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
+        printf(COLOR_RED "[PLAYER] That is not a number. Please enter a valid number. Game ending now.\n" COLOR_RESET);
         return;
       }
       } // *
 
       while(updateBoard(board, col, token)==-1){
         if(col>6||col<0){
-         printf(COLOR_RED "[PLAYER] Column %d does not exist." COLOR_RESET "Enter a valid column number (0-%d):\n", col, COLS - 1);;
+          printf(COLOR_RED "[PLAYER] Column %d does not exist." COLOR_RESET "Enter a valid column number (0-%d):\n", col, COLS - 1);;
 
           if (FD_ISSET(STDIN_FILENO, &read_fds)) {  // ***
           if (scanf("%d", &col) != 1) {
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
   int r = recv(sd, &playerTurn, sizeof(playerTurn), 0);
 
   if (r <= 0) {
-    printf(COLOR_RED "[CLIENT] Server closed before assigning player number.\n" COLOR_RESET);
+    printf(COLOR_RED "[PLAYER] Server closed before assigning player number.\n" COLOR_RESET);
     close(sd);
     return 1;
   }

@@ -106,9 +106,15 @@ void subserver_logic(int p1_socket,int p2_socket){
 
   r = recv(p1_socket, name1, sizeof(name1), 0);
   err(r, "recv name1");
+  if(r==0){
+    printf("Connection with Player 1 lost, closing server\n");
+  }
 
   r = recv(p2_socket, name2, sizeof(name2), 0);
   err(r, "recv name2");
+  if(r==0){
+    printf("Connection with Player 1 lost, closing server\n");
+  }
 
   printf(COLOR_CYAN "[SERVER] Game players: '%s' vs '%s'\n" COLOR_RESET, name1, name2);
 
@@ -228,3 +234,4 @@ int main(int argc, char *argv[] ) {
   }
   close(listen_socket);
 }
+
