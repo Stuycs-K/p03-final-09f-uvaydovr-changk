@@ -1,5 +1,8 @@
 #include "networking.h"
 
+#define MAX_PLAYERS 100;
+#define NAME_LEN 100;
+
 static void sighandler(int signo){
   if(signo==SIGINT){
     printf("\nSIGINT detected, closing server\n");
@@ -7,6 +10,81 @@ static void sighandler(int signo){
   }
 
 }
+
+void leaderboard() {
+    FILE *fp = fopen("leaderboard.txt", "r");
+    if (!fp) {
+        printf("[leaderboard] No leaderboard yet! Play some games first. \n");
+        return;
+    }
+
+    char names[MAX_PLAYERS][NAME_LEN];
+    int wins[MAX_PLAYERS];
+    int count = 0;
+    
+    int i = 0;
+    while (i < MAX_PLAYERS) {
+        wins[i] = 0;
+        i++;
+    }
+
+    char line[NAME_LEN];
+    while(fgets(line, sizeof(line), fp)) {
+    	int len = 0;
+        while (line[len] != '\0') {
+            if (line[len] == '\n') {
+                line[len] = '\0';
+                break;
+            }
+            len++;
+        }
+
+        if (line[0] == '\0') continue;
+
+        int found = 0;
+        int j = 0;
+
+        while (j < count) {
+        	if(strcmp(names[j], line) == 0) {
+        		wins[j] = wins[j] + 1;
+        		found = 1;
+        		break;
+        	}
+        	j++;
+        }
+
+        if (!found && count < MAX_PLAYERS) {
+        	int k = 0;
+        	while (line[k] != '\0' && k < NAME_LEN - 1) {
+        		names[count][k] = line[k];
+        		k++;
+        	}
+
+        	names[count][k] = '\0';
+        	wins[count] = 1;
+        	count++;
+        } 
+	} 
+
+	fclose(fp);
+
+	printf("\n=== TOURNAMENT LEADERBOARD === \n");
+	if (count == 0) {
+		printf("(no wins recorded yet) \n\n");
+		return;
+	}
+
+	int idx = 0;
+	while(idx < count) {
+		printf("%d %s %d wins \n", idx + 1, names[idx], wins[idx]);
+		idx++;
+	}
+
+	printf("==================================\n\n")';
+
+	return 0;
+}
+
 
 //subserver does game, closes when game ends and sends info on who won to server
 void subserver_logic(int p1_socket,int p2_socket){
@@ -83,28 +161,6 @@ void subserver_logic(int p1_socket,int p2_socket){
     s=send(p1_socket,&buff,sizeof(buff),0);
     err(s,"send");
   }
-}
-
-void leaderboard(){
-  FILE *fp = fopen("leaderboard.txt", "r");
-  int count[256] = { 0 };
-  char c;
-
-  while((c=fgetc(fp))) {
-    if(c == EOF) break;
-    count[c]+=1;
-  }
-
-  for(k = 0; k < 256; k++) {
-    if(count[k] > 0) {
-      printf("char %c; %d times \n", k, count[k]);
-    }
-  }
-
-  fclose(fp);
-  return 0;
-
-
 }
 
 int main(int argc, char *argv[] ) {
