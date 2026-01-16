@@ -26,7 +26,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p1_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf("Connection closed. Other player or server quit.\n");
+      printf("Connection with Player 1 lost, closing game.\n");
       close(p1_socket);
       return;
     }
@@ -36,7 +36,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p2_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf("Connection closed. Other player or server quit.\n");
+      printf("Connection with Player 2 lost, closing game.\n");
       close(p2_socket);
       return;
     }
@@ -54,7 +54,7 @@ int main(int argc, char *argv[] ) {
   while(1){
     int p1_socket = server_tcp_handshake(listen_socket);
     int p2_socket = server_tcp_handshake(listen_socket);
-    printf("server connected 2 players.\n\n");
+    printf("Server connected 2 players.\n\n");
 
     int f=fork();
     if(f<0){

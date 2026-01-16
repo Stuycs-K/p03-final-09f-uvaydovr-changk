@@ -13,7 +13,6 @@ int server_setup(){ // run twice, once for each player
   hints->ai_socktype=SOCK_STREAM; //TCP socket
   hints->ai_flags =AI_PASSIVE;
   getaddrinfo(NULL, "9845", hints, &results); //Server sets node to NULL
-
   //create two sockets
   int playerd;//store the socket descriptor here
   playerd=socket(results->ai_family,results->ai_socktype,results->ai_protocol);
@@ -25,7 +24,7 @@ int server_setup(){ // run twice, once for each player
 
   //bind the socket to address and port
   if(bind(playerd,results->ai_addr,results->ai_addrlen)==-1){
-    printf("%s\n",strerror(errno));
+    printf("Bind error, errno: %s\n",strerror(errno));
     exit(1);
   }
 
