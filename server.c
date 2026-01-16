@@ -116,25 +116,25 @@ void subserver_logic(int p1_socket,int p2_socket){
 
   while(1){
     r=recv(p1_socket,&buff,sizeof(buff),0);
-    err(r,"recv");
-    if(r==0){
+    if(r <= 0){
       printf("Connection closed. Other player or server quit.\n");
       close(p1_socket);
       return;
     }
+    err(r, "recv");
 
     if(buff == -1) {
         int fd = open("leaderboard.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
         if(fd!=-1){
             int len = 0;
-            while (name1[len] != '\0') {
+            while (name2[len] != '\0') {
                 len++;
             }
-            write(fd, name1, len);
+            write(fd, name2, len);
             write(fd, "\n", 1);
             close(fd);
     
-            printf("Recorded win for %s in leaderboard\n", name1);
+            printf("Recorded win for %s in leaderboard\n", name2);
             leaderboard();
         }
     
@@ -162,14 +162,14 @@ void subserver_logic(int p1_socket,int p2_socket){
         int fd = open("leaderboard.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
         if (fd != -1) { 
             int len = 0;
-            while (name2[len] != '\0') {
+            while (name1[len] != '\0') {
             	len++;
             }
-            write(fd, name2, len);
+            write(fd, name1, len);
             write(fd, "\n", 1);
             close(fd);
             
-            printf("Recorded win for %s in leaderboard\n", name2);
+            printf("Recorded win for %s in leaderboard\n", name1);
             leaderboard();
         }
 

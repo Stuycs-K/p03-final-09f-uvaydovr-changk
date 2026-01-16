@@ -12,7 +12,7 @@ int server_setup(){ // run twice, once for each player
   hints->ai_family=AF_INET;
   hints->ai_socktype=SOCK_STREAM; //TCP socket
   hints->ai_flags =AI_PASSIVE;
-  getaddrinfo(NULL, "9845", hints, &results); //Server sets node to NULL
+  getaddrinfo(NULL, PORT, hints, &results); //Server sets node to NULL
 
   //create two sockets
   int playerd;//store the socket descriptor here
@@ -71,7 +71,7 @@ int player_tcp_handshake(char * server_address){ //both players do this with ser
   hints=calloc(1,sizeof(struct addrinfo));
   hints->ai_family=AF_INET;
   hints->ai_socktype=SOCK_STREAM;
-  int info = getaddrinfo(server_address, "9845", hints, &results);
+  int info = getaddrinfo(server_address, PORT, hints, &results);
 
   if (info != 0) {
   	free(hints);

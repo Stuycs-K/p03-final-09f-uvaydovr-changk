@@ -58,30 +58,14 @@ void playerLogic(int server_socket, int playerTurn){
 
     char result = checkBoard(board);  //function in main.c
     if (result == token) {
-      printf("You win!\n");
-
-      int winSig = -1;
-      int s2 = send(server_socket, &winSig, sizeof(winSig), 0);
-      err(s2, "send winner signal");
-
-
-      int fd = open("leaderboard.txt", O_WRONLY|O_CREAT|O_APPEND, 0644);
-      if(fd!=-1){
-          int len = 0;
-          while (name[len] != '\0') {
-              len++;
-          }
-          write(fd, name, len);
-          write(fd, "\n", 1);
-          close(fd);
-
-          printf("Recorded win for %s in leaderboard \n", name);
-      }
-
-
+      printf("You win!\n");;
       break;
     } else if (result == oppToken) {
       printf("%s (Player %d) wins!\n", oppName, oppositePlayer);
+      
+      int winSig = -1;
+      int s2 = send(server_socket, &winSig, sizeof(winSig), 0);
+      err(s2, "send winner signal:");
       break;
     } else if (result == 'D') {
       printf("Board full. Draw.\n");
