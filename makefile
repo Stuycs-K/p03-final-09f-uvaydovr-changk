@@ -2,9 +2,6 @@
 
 compile: player server
 
-run: compile
-	@./server
-
 player: player.o networking.o game.o
 	@gcc -o player player.o networking.o game.o
 
