@@ -8,7 +8,7 @@ static int game_id = 0;
 
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf(COLOR_RED "[SERVER] SIGINT detected, shutting down.\n" COLOR_RESET);
+    printf(COLOR_MAGENTA "[SERVER] SIGINT detected, shutting down.\n" COLOR_RESET);
     exit(0);
   }
 
@@ -17,7 +17,7 @@ static void sighandler(int signo){
 void leaderboard() {
     FILE *fp = fopen("leaderboard.txt", "r");
     if (!fp) {
-        printf(COLOR_RED "[SERVER] No leaderboard yet. Play some games first.\n" COLOR_RESET);
+        printf(COLOR_MAGENTA "[SERVER] No leaderboard yet. Play some games first.\n" COLOR_RESET);
         return;
     }
 
@@ -71,7 +71,7 @@ void leaderboard() {
 
 	fclose(fp);
 
-	printf("\n" COLOR_BOLD "=== TOURNAMENT LEADERBOARD ===" COLOR_RESET "\n");
+	printf("\n" COLOR_GOLD "=== TOURNAMENT LEADERBOARD ===" COLOR_RESET "\n");
 	if (count == 0) {
 		printf("(no wins recorded yet) \n\n");
 		return;

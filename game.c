@@ -67,17 +67,19 @@ char checkBoard(char board[]){
 void printBoard(char * board){
   printf("\n ");
   for (int c = 0; c < COLS; c++) {
-    printf(COLOR_CYAN COLOR_BOLD "%d " COLOR_RESET, c);
+    printf(COLOR_BLUE "%d " COLOR_RESET, c);
   }
 
   printf("\n");
   for(int r = 0; r < ROWS; r++) {
-    printf("|");
+    printf(COLOR_BLUE "|");
     for (int c = 0; c < COLS; c++) {
       int i = r * COLS + c;
       char ch = board[i];
       if(ch ==0) ch = '_';
-      printf("%c|", ch);
+      printf(COLOR_BLUE "%c|", ch);
+      
+      
     }
     printf("\n");
   }
