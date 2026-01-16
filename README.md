@@ -10,6 +10,8 @@ Rachel Uvaydov, Katherine Chang
 A two player Connect Four tournament game with a central server. Players are assigned as X or O and can take turns dropping pieces into a shared board.
 When a game ends, the server records the winner's name in a leaderboard. Multiple games can be played over time, and wins accumulate across games.
 
+[Watch our demo video here!](https://drive.google.com/file/d/10-wGIww2SrmdLYNnbnskHWIMHcDqLjIB/view?usp=sharing)
+
 ### Instructions:
 
 #### How to Run
