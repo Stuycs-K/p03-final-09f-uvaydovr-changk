@@ -1,4 +1,5 @@
 #include "networking.h"
+#include "game.h"
 
 #define MAX_PLAYERS 100
 #define NAME_LEN 100
@@ -7,7 +8,7 @@ static int game_id = 0;
 
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf("\n" COLOR_MAGENTA "[SERVER] SIGINT detected, shutting down.\n" COLOR_RESET);
+    printf(COLOR_RED "[SERVER] SIGINT detected, shutting down.\n" COLOR_RESET);
     exit(0);
   }
 
@@ -16,7 +17,7 @@ static void sighandler(int signo){
 void leaderboard() {
     FILE *fp = fopen("leaderboard.txt", "r");
     if (!fp) {
-        printf(COLOR_MAGENTA "[SERVER] No leaderboard yet. Play some games first.\n" COLOR_RESET);
+        printf(COLOR_RED "[SERVER] No leaderboard yet. Play some games first.\n" COLOR_RESET);
         return;
     }
 
@@ -120,7 +121,7 @@ void subserver_logic(int p1_socket,int p2_socket){
   while(1){
     r=recv(p1_socket,&buff,sizeof(buff),0);
     if(r <= 0){
-      printf(COLOR_MAGENTA "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
+      printf(COLOR_RED "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
       close(p1_socket);
       return;
     }
@@ -155,7 +156,7 @@ void subserver_logic(int p1_socket,int p2_socket){
     r=recv(p2_socket,&buff,sizeof(buff),0);
     err(r,"recv");
     if(r==0){
-      printf(COLOR_MAGENTA "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
+      printf(COLOR_RED "[SERVER] Connection closed. Other player or server quit.\n" COLOR_RESET);
       close(p2_socket);
       return;
     }

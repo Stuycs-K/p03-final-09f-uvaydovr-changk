@@ -4,7 +4,7 @@
 
 static void sighandler(int signo){
   if(signo==SIGINT){
-    printf("\n" COLOR_MAGENTA "[CLIENT] SIGINT detected, closing game." COLOR_RESET "\n");
+    printf(COLOR_RED "[CLIENT] SIGINT detected, closing game." COLOR_RESET "\n");
     exit(0);
   }
 }
