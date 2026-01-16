@@ -71,21 +71,28 @@ void printBoard(char * board){
   }
 
   printf("\n");
-  for(int r = 0; r < ROWS; r++) {
-    printf(COLOR_BLUE "|");
-    for (int c = 0; c < COLS; c++) {
-      int i = r * COLS + c;
-      char ch = board[i];
-      if(ch ==0) ch = '_';
-      printf(COLOR_BLUE "%c|", ch);
-      
-      
-    }
-    printf("\n");
+  
+  for (int r = 0; r < ROWS; r++) {
+      printf(COLOR_BLUE "|" COLOR_RESET);
+      for (int c = 0; c < COLS; c++) {
+          int i = r * COLS + c;
+          char ch = board[i];
+          if (ch == 0) ch = '_';
+
+          if (ch == '_') {
+              printf(COLOR_BLUE "_|" COLOR_RESET);
+          } else if (ch == 'X') {
+              printf(COLOR_RED "X" COLOR_BLUE "|" COLOR_RESET);
+          } else if (ch == 'O') {
+              printf(COLOR_YELLOW "O" COLOR_BLUE "|" COLOR_RESET);
+          } else {
+              printf("%c" COLOR_BLUE "|" COLOR_RESET, ch);
+          }
+      } 
+      printf("\n");
   }
   printf("\n");
 }
-
 
 //updates board array
 //returns 0 if board updated
