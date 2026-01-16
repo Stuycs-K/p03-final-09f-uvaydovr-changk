@@ -27,3 +27,9 @@ The board that printBoard prints was updated to look cleaner, with the row numbe
 
 ### 2026-01-13 - Trying to fix error with players not closing at same time+New plan to fix player 1 and player 2 getting assigned incorrectly
 Tried to figure out why only one player closed when server closed, we asked Mr. K what to do about assigning p1 and p2 in server and he suggested to just not ask the player for args and instead assign them based on who runs player first, so I will implement that in the future (30 minutes).
+
+### 2026-01-14 - Updated files+Changing print messages, Working on implementing select
+Updated makefile to get rid of ARGS when doing make player, changed print messages in server.c and player.c when game is ending due to signhandler, recv, or an error to make why the game is ending more clear (30 minutes). AT HOME: Worked on implementing select in player.c, the code compiles but both players freeze while running so I have to fix it (30 minutes).
+
+### 2026-01-15 - Working on select, updating print statements, fixed makefile, recorded presentation video
+Worked on implementing select, made some progress but it's still bugged (worked during all of class and for 30 minutes at home), AT HOME: Fixed error with makefile, updated print statements for errors and sighandler to make them more clear and detailed, worked with my partner to record our video for the presentation, fixed minor errors and bugs and I made sure everything was consistent with the code so it wouldn't break while presenting it (3 hours).
