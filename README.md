@@ -12,18 +12,32 @@ When a game ends, the server records the winner's name in a leaderboard. Multipl
 
 ### Instructions:
 
-#### Installation & Compilation
-From the project directory: ```make compile```.
-This builds two executables: ```server``` and ```player```.
-If you want to reset the game: ```make clean```.
-
 #### How to Run
-Start the server: ```./server```
-Start player 1 and 2 with ```./player```
+From the project directory: 
+```
+make compile	# build server and player
+make run 		# starts the server (Terminal 1)
 
-How does the user install/compile/run the program. (CHANGE THIS!!!!!)
-How does the user interact with this program? (CHANGE THIS!!!!!)
+```
+
+Then, in two other terminals on the same machine:
+```
+./player          # Player 1 (Terminal 2)
+./player          # Player 2 (Terminal 3)
+```
+
+You can end the game with ```Ctrl+C``` - this will end all active games if run in the server, and it will quit the current game if in player.
+Run ```make clean``` to reset the tournament and clear files and leaderboard.
+
+#### How to Play
+For each player:
+1. On start, enter your name when prompted. The server assigns you Player 1 or Player 2 based on the order that you joined and prints your token. The board shows columns 0-6.
+2. On your turn, enter a number from 0-6. If the column is invalid or full, you’ll see an error and be asked again.
+3. When it's the opponent's turn, your client will tell you to wait and updates the board after their move.
+4. The game ends when someone connects four in a row (winner is then announced), or the board is full (draw).
+
+After a win, the server records the winner's name in leaderboard.txt and prints an updated tournament leaderboard.
 
 ### Resources/ References:
-
-list here(CHANGE THIS!!!!!)
+Beej's Guide to Network Programming Using Internet Sockets  
+https://beej.us/guide/bgnet/html/

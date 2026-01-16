@@ -39,5 +39,5 @@ At home: Fixed leaderboard not printing after wins. Caused by server never recei
 - Debugged "connection refused" error and changed Also changed it from a hard coded PORT ot the variable
 - Tested the entire game: two players can connect, play, winner's name is appended to 'leaderboard.txt' and prints updated leaderboard
 - also added colors to print statements and cleaned up print statements
-
+- changed the Makefile to have a run target instead of ./server
 
